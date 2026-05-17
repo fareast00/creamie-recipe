@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Recipe Book</title>
+
+  <!-- ============================================================
+       FONTS
+       Using Google Fonts:
+       - Playfair Display: headings and recipe titles (elegant serif)
+       - DM Sans: body text (clean, readable sans-serif)
+  ============================================================ -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+
+    /* ============================================================
+       CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+       Change these variables to retheme the entire app at once.
+       --cream, --warm: background colours
+       --brown: primary dark colour (protein ice cream theme)
+       --accent: orange highlight colour
+       --muted: secondary text
+       --card, --border: card backgrounds and borders
+       --green: meals theme colour
+       --blue: low cal ice cream theme colour
+    ============================================================ */
+    :root {
+      --cream: #FAF7F2;
+      --warm: #F2EDE4;
+      --brown: #3B2A1A;
+      --accent: #C8603A;
+      --muted: #8A7968;
+      --card: #FFFFFF;
+      --border: #E8E0D4;
+      --green: #1E4030;
+      --blue: #1B3D56;
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--brown);
+      min-height: 100vh;
+    }
+
+    /* ============================================================
+       HERO SECTION
+       Dark brown banner at the top with title and stats.
+       The ::before and ::after pseudo-elements are decorative
+       blurred circles in the background.
+    ============================================================ */
+    .hero {
+      background: var(--brown);
+      padding: 48px 24px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: -60px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: rgba(200,96,58,0.15);
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; right: -40px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(200,96,58,0.1);
+    }
+    .hero-eyebrow {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      position: relative; z-index: 1;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 6vw, 46px);
+      color: var(--cream);
+      line-height: 1.15;
+      position: relative; z-index: 1;
+      margin-bottom: 8px;
+    }
+    .hero h1 em { color: var(--accent); font-style: italic; }
+    .hero-sub {
+      color: rgba(250,247,242,0.6);
+      font-size: 13px;
+      font-weight: 300;
+      position: relative; z-index: 1;
+      margin-bottom: 24px;
+    }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      position: relative; z-index: 1;
+      flex-wrap: wrap;
+    }
+    .hero-stat-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--accent);
+      display: block;
+    }
+    .hero-stat-label {
+      font-size: 10px;
+      color: rgba(250,247,242,0.45);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ============================================================
+       TOP NAVIGATION BAR
+       Sticky so it stays visible when scrolling.
+       .active class is toggled by JS when switching sections.
+    ============================================================ */
+    .nav {
+      background: var(--warm);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav::-webkit-scrollbar { display: none; }
+    .nav-btn {
+      padding: 13px 16px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      color: var(--muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover { color: var(--brown); }
+    .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* ============================================================
+       CONTENT WRAPPER & SECTIONS
+       Each "section" (Recipes, Tips) is hidden by default.
+       JS adds .active to show the selected one.
+    ============================================================ */
+    .content { max-width: 860px; margin: 0 auto; padding: 28px 16px 60px; }
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* ============================================================
+       CATEGORY TABS
+       Pill-shaped tabs inside the Recipes section.
+       Used to switch between Protein Ice Cream, Low Cal, and Meals.
+       .active class toggled by JS.
+    ============================================================ */
+    .cat-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .cat-tab {
+      padding: 8px 18px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .cat-tab:hover { border-color: var(--accent); color: var(--brown); }
+    .cat-tab.active { background: var(--brown); color: var(--cream); border-color: var(--brown); }
+    .cat-tab .count { font-size: 11px; opacity: 0.6; margin-left: 4px; }
+
+    /* Each category panel — hidden until .active added by JS */
+    .cat-section { display: none; }
+    .cat-section.active { display: block; }
+
+    /* ============================================================
+       CAROUSEL
+       Horizontal sliding card carousel.
+       .carousel-outer clips overflow so only one slide shows.
+       .carousel-track holds all slides side by side.
+       JS moves the track using translateX to slide between recipes.
+
+       Each slide theme (brown/blue/green) has its own colour
+       overrides below for text legibility on dark backgrounds.
+    ============================================================ */
+    .carousel-wrap { margin-bottom: 28px; }
+    .carousel-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .carousel-counter { font-size: 12px; color: var(--muted); letter-spacing: 0; text-transform: none; }
+    .carousel-outer { overflow: hidden; border-radius: 16px; }
+    .carousel-track { display: flex; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .carousel-slide { min-width: 100%; cursor: pointer; }
+    .carousel-slide-inner { padding: 28px 28px 24px; }
+
+    /* Carousel text elements */
+    .carousel-tag { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+    .carousel-title { font-family: 'Playfair Display', serif; font-size: 24px; color: #FFFFFF; margin-bottom: 6px; }
+    .carousel-desc { font-size: 13px; font-weight: 400; margin-bottom: 18px; }
+    .carousel-macros { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
+    .carousel-macro-val { font-family: 'Playfair Display', serif; font-size: 22px; color: #FFFFFF; display: block; }
+    .carousel-macro-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    .carousel-ing-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin: 14px 0 8px; font-weight: 600; }
+    .carousel-ing-list { list-style: none; margin-bottom: 18px; }
+    .carousel-ing-list li { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; }
+    .carousel-ing-list li:last-child { border-bottom: none; }
+    .carousel-ing-amt { font-weight: 600; }
+    .carousel-cta { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border-radius: 20px; padding: 6px 14px; }
+
+    /* --- BROWN theme: Protein Ice Cream --- */
+    .slide-brown { background: var(--brown); }
+    .slide-brown .carousel-tag { color: #F0A070; }
+    .slide-brown .carousel-desc { color: rgba(255,255,255,0.65); }
+    .slide-brown .carousel-macro-label { color: rgba(255,255,255,0.5); }
+    .slide-brown .carousel-ing-label { color: #F0A070; }
+    .slide-brown .carousel-ing-list li { border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .slide-brown .carousel-ing-name { color: rgba(255,255,255,0.8); }
+    .slide-brown .carousel-ing-amt { color: #F0A070; }
+    .slide-brown .carousel-cta { color: #F0A070; border: 1px solid rgba(240,160,112,0.5); }
+
+    /* --- BLUE theme: Low Cal Ice Cream --- */
+    .slide-blue { background: var(--blue); }
+    .slide-blue .carousel-tag { color: #7EC8E3; }
+    .slide-blue .carousel-desc { color: rgba(255,255,255,0.75); }
+    .slide-blue .carousel-macro-label { color: rgba(255,255,255,0.6); }
+    .slide-blue .carousel-ing-label { color: #7EC8E3; }
+    .slide-blue .carousel-ing-list li { border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .slide-blue .carousel-ing-name { color: rgba(255,255,255,0.85); }
+    .slide-blue .carousel-ing-amt { color: #7EC8E3; }
+    .slide-blue .carousel-cta { color: #7EC8E3; border: 1px solid rgba(126,200,227,0.5); }
+
+    /* --- GREEN theme: Meals --- */
+    .slide-green { background: var(--green); }
+    .slide-green .carousel-tag { color: #7EC99A; }
+    .slide-green .carousel-desc { color: rgba(255,255,255,0.75); }
+    .slide-green .carousel-macro-label { color: rgba(255,255,255,0.6); }
+    .slide-green .carousel-ing-label { color: #7EC99A; }
+    .slide-green .carousel-ing-list li { border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .slide-green .carousel-ing-name { color: rgba(255,255,255,0.85); }
+    .slide-green .carousel-ing-amt { color: #7EC99A; }
+    .slide-green .carousel-cta { color: #7EC99A; border: 1px solid rgba(126,201,154,0.5); }
+
+    /* Carousel nav: prev/next buttons and dot indicators */
+    .carousel-controls { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+    .carousel-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--brown);
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .carousel-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+    .dots { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
+    .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: all 0.25s;
+      border: none; padding: 0;
+    }
+    /* Active dot stretches into a pill shape */
+    .dot.active { background: var(--accent); width: 18px; border-radius: 3px; }
+
+    /* ============================================================
+       VIEW ALL TOGGLE BUTTON
+       Expands/collapses the full recipe card list below carousel.
+       .open class added by JS to rotate the arrow and show list.
+    ============================================================ */
+    .view-all-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--brown);
+      transition: all 0.2s;
+      margin-bottom: 16px;
+    }
+    .view-all-btn:hover { background: var(--warm); }
+    .view-all-btn .sub { color: var(--muted); font-size: 13px; font-weight: 400; }
+    .arrow { font-size: 18px; transition: transform 0.25s; display: inline-block; }
+    .view-all-btn.open .arrow { transform: rotate(180deg); }
+    .all-recipes { display: none; }
+    .all-recipes.open { display: block; }
+
+    /* ============================================================
+       RECIPE CARDS (EXPANDABLE)
+       Each card has a coloured header, macro bar, and body.
+       Clicking the header toggles .open which shows .recipe-body
+       and rotates .recipe-toggle arrow.
+    ============================================================ */
+    .recipe-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 10px rgba(59,42,26,0.05);
+    }
+    .recipe-header {
+      padding: 20px 24px 18px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Header background colours per category */
+    .rh-brown { background: var(--brown); }
+    .rh-blue  { background: var(--blue); }
+    .rh-green { background: var(--green); }
+
+    /* Tag/label colours per category */
+    .recipe-tag { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; font-weight: 600; }
+    .rt-accent { color: #F0A070; }
+    .rt-blue   { color: #7EC8E3; }
+    .rt-green  { color: #7EC99A; }
+
+    .recipe-title { font-family: 'Playfair Display', serif; font-size: 20px; color: #FFFFFF; margin-bottom: 3px; }
+    .recipe-desc  { font-size: 12px; color: rgba(255,255,255,0.6); }
+    .recipe-toggle { color: rgba(255,255,255,0.5); font-size: 20px; transition: transform 0.3s; margin-left: 12px; flex-shrink: 0; }
+    .recipe-card.open .recipe-toggle { transform: rotate(180deg); }
+
+    /* Macro bar: row of kcal / protein / carbs / fat */
+    .macro-bar { display: flex; background: var(--warm); border-bottom: 1px solid var(--border); }
+    .macro-item { flex: 1; padding: 10px 6px; text-align: center; border-right: 1px solid var(--border); }
+    .macro-item:last-child { border-right: none; }
+    .macro-val   { font-size: 16px; font-weight: 500; color: var(--brown); display: block; }
+    .macro-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+
+    /* Recipe body: hidden until card is .open */
+    .recipe-body { display: none; padding: 22px 24px; }
+    .recipe-card.open .recipe-body { display: block; }
+
+    /* Section titles within recipe body */
+    .sec-title {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Ingredients list */
+    .ing-list { list-style: none; margin-bottom: 22px; }
+    .ing-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .ing-list li:last-child { border-bottom: none; }
+    .ing-name { color: var(--brown); }
+    .ing-amt  { color: var(--accent); font-weight: 500; }
+
+    /* Numbered steps list */
+    .steps { list-style: none; margin-bottom: 18px; }
+    .step  { display: flex; gap: 14px; margin-bottom: 14px; }
+    .step-num {
+      width: 26px; height: 26px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 500;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-text  { font-size: 14px; line-height: 1.6; color: var(--brown); padding-top: 2px; }
+    .step-title { font-weight: 500; margin-bottom: 2px; }
+
+    /* Tip/note box at bottom of recipe */
+    .tip-box {
+      background: var(--warm);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .tip-box strong { color: var(--brown); }
+
+    /* ============================================================
+       TIPS PAGE GRID
+       8-card grid for Creami tips + texture booster card
+    ============================================================ */
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .tip-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .tip-icon { font-size: 22px; margin-bottom: 8px; }
+    .tip-card-title { font-weight: 500; font-size: 14px; margin-bottom: 5px; }
+    .tip-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* Utility text styles */
+    .page-title { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 4px; }
+    .page-sub   { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       HERO BANNER
+  ============================================================ -->
+  <div class="hero">
+    <div class="hero-eyebrow">Faiz's Recipe Collection</div>
+    <h1>My <em>Recipe</em> Book</h1>
+    <p class="hero-sub">Protein Ice Cream · Low Cal Ice Cream · Meals</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="hero-stat-val">3</span><span class="hero-stat-label">Protein Ice Cream</span></div>
+      <div class="hero-stat"><span class="hero-stat-val">3</span><span class="hero-stat-label">Low Cal Ice Cream</span></div>
+      <div class="hero-stat"><span class="hero-stat-val">5</span><span class="hero-stat-label">Meals</span></div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TOP NAV — switches between Recipes and Tips sections
+  ============================================================ -->
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showSection('recipes', this)">Recipes</button>
+    <button class="nav-btn" onclick="showSection('tips', this)">Creami Tips</button>
+  </nav>
+
+  <div class="content">
+
+    <!-- ==========================================================
+         RECIPES SECTION
+    ========================================================== -->
+    <div class="section active" id="recipes">
+
+      <!-- Category tab bar: switches between the 3 recipe groups -->
+      <div class="cat-tabs">
+        <button class="cat-tab active" onclick="showCat('pic', this)">💪 Protein Ice Cream <span class="count">(3)</span></button>
+        <button class="cat-tab" onclick="showCat('lcic', this)">🧊 Low Cal Ice Cream <span class="count">(3)</span></button>
+        <button class="cat-tab" onclick="showCat('meals', this)">🍳 Meals <span class="count">(5)</span></button>
+      </div>
+
+      <!-- ========================================================
+           CATEGORY: PROTEIN ICE CREAM
+           Recipes that contain ON protein powder.
+           Colour theme: brown (#3B2A1A)
+      ======================================================== -->
+      <div class="cat-section active" id="cat-pic">
+
+        <!-- Carousel: shows one featured recipe at a time -->
+        <div class="carousel-wrap">
+          <div class="carousel-label">
+            <span>⭐ Featured</span>
+            <span class="carousel-counter" id="cc-pic">1 / 3</span>
+          </div>
+          <div class="carousel-outer">
+            <div class="carousel-track" id="track-pic">
+
+              <!-- Slide 1: Vanilla -->
+              <div class="carousel-slide slide-brown" onclick="openRecipe('vanilla', 'pic')">
+                <div class="carousel-slide-inner">
+                  <div class="carousel-tag">Recipe 01 · Classic</div>
+                  <div class="carousel-title">Vanilla Protein Ice Cream</div>
+                  <div class="carousel-desc">Clean, simple, high protein — xanthan gum & skim milk powder base</div>
+                  <div class="carousel-macros">
+                    <div><span class="carousel-macro-val">300</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">38g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">22g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">4.5g</span><span class="carousel-macro-label">fat</span></div>
+                  </div>
+                  <div class="carousel-ing-label">Ingredients</div>
+                  <ul class="carousel-ing-list">
+                    <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">400ml</span></li>
+                    <li><span class="carousel-ing-name">ON French Vanilla Crème</span><span class="carousel-ing-amt">1 scoop</span></li>
+                    <li><span class="carousel-ing-name">Skim milk powder</span><span class="carousel-ing-amt">1 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Xanthan gum</span><span class="carousel-ing-amt">¼ tsp</span></li>
+                    <li><span class="carousel-ing-name">Vanilla extract</span><span class="carousel-ing-amt">½ tsp</span></li>
+                    <li><span class="carousel-ing-name">Stevia powder (1:1)</span><span class="carousel-ing-amt">1 tsp</span></li>
+                    <li><span class="carousel-ing-name">Salt</span><span class="carousel-ing-amt">Pinch</span></li>
+                  </ul>
+                  <div class="carousel-cta">Tap to view full recipe ↓</div>
+                </div>
+              </div>
+
+              <!-- Slide 2: Chocolate -->
+              <div class="carousel-slide slide-brown" onclick="openRecipe('chocolate', 'pic')">
+                <div class="carousel-slide-inner">
+                  <div class="carousel-tag">Recipe 02 · Chocolate</div>
+                  <div class="carousel-title">Chocolate Protein Ice Cream</div>
+                  <div class="carousel-desc">Deep cocoa flavour, fudgy and dense at 300ml</div>
+                  <div class="carousel-macros">
+                    <div><span class="carousel-macro-val">295</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">38g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">21g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">4.5g</span><span class="carousel-macro-label">fat</span></div>
+                  </div>
+                  <div class="carousel-ing-label">Ingredients</div>
+                  <ul class="carousel-ing-list">
+                    <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">300ml</span></li>
+                    <li><span class="carousel-ing-name">ON French Vanilla Crème</span><span class="carousel-ing-amt">1 scoop</span></li>
+                    <li><span class="carousel-ing-name">Unsweetened cocoa powder</span><span class="carousel-ing-amt">2 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Skim milk powder</span><span class="carousel-ing-amt">1 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Xanthan gum</span><span class="carousel-ing-amt">¼ tsp</span></li>
+                    <li><span class="carousel-ing-name">Stevia powder (1:1)</span><span class="carousel-ing-amt">1½ tsp</span></li>
+                    <li><span class="carousel-ing-name">Salt</span><span class="carousel-ing-amt">Pinch</span></li>
+                  </ul>
+                  <div class="carousel-cta">Tap to view full recipe ↓</div>
+                </div>
+              </div>
+
+              <!-- Slide 3: Strawberry Cheesecake -->
+              <div class="carousel-slide slide-brown" onclick="openRecipe('strawberry-protein', 'pic')">
+                <div class="carousel-slide-inner">
+                  <div class="carousel-tag">Recipe 03 · Fruity</div>
+                  <div class="carousel-title">Strawberry Cheesecake</div>
+                  <div class="carousel-desc">Tangy, fruity and creamy — naturally thickened by fresh strawberry pectin</div>
+                  <div class="carousel-macros">
+                    <div><span class="carousel-macro-val">292</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">36g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">22g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">3g</span><span class="carousel-macro-label">fat</span></div>
+                  </div>
+                  <div class="carousel-ing-label">Ingredients</div>
+                  <ul class="carousel-ing-list">
+                    <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">250ml</span></li>
+                    <li><span class="carousel-ing-name">ON French Vanilla Crème</span><span class="carousel-ing-amt">1 scoop</span></li>
+                    <li><span class="carousel-ing-name">Fresh strawberries</span><span class="carousel-ing-amt">80g</span></li>
+                    <li><span class="carousel-ing-name">Fat free cream cheese</span><span class="carousel-ing-amt">1 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Skim milk powder</span><span class="carousel-ing-amt">1 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Xanthan gum</span><span class="carousel-ing-amt">¼ tsp</span></li>
+                    <li><span class="carousel-ing-name">Lemon juice</span><span class="carousel-ing-amt">½ tsp</span></li>
+                    <li><span class="carousel-ing-name">Stevia powder (1:1)</span><span class="carousel-ing-amt">1 tsp</span></li>
+                    <li><span class="carousel-ing-name">Salt</span><span class="carousel-ing-amt">Pinch</span></li>
+                  </ul>
+                  <div class="carousel-cta">Tap to view full recipe ↓</div>
+                </div>
+              </div>
+
+            </div><!-- end track-pic -->
+          </div><!-- end carousel-outer -->
+          <div class="carousel-controls">
+            <button class="carousel-btn" onclick="move('pic', -1)">‹</button>
+            <div class="dots" id="dots-pic">
+              <button class="dot active" onclick="go('pic', 0)"></button>
+              <button class="dot" onclick="go('pic', 1)"></button>
+              <button class="dot" onclick="go('pic', 2)"></button>
+            </div>
+            <button class="carousel-btn" onclick="move('pic', 1)">›</button>
+          </div>
+        </div><!-- end carousel-wrap -->
+
+        <!-- Toggle button to show/hide full recipe cards -->
+        <button class="view-all-btn" id="vab-pic" onclick="toggleAll('pic')">
+          <div>All Protein Ice Cream Recipes <span class="sub">— tap to expand</span></div>
+          <span class="arrow">⌄</span>
+        </button>
+
+        <!-- Full recipe cards (expandable) -->
+        <div class="all-recipes" id="all-pic">
+
+          <!-- Recipe: Vanilla -->
+          <div class="recipe-card" id="card-vanilla">
+            <div class="recipe-header rh-brown" onclick="toggleCard('vanilla')">
+              <div>
+                <div class="recipe-tag rt-accent">Recipe 01 · Classic</div>
+                <div class="recipe-title">Vanilla Protein Ice Cream</div>
+                <div class="recipe-desc">Xanthan gum + skim milk powder base</div>
+              </div>
+              <div class="recipe-toggle">⌄</div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-item"><span class="macro-val">300</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">38g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">22g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">4.5g</span><span class="macro-label">fat</span></div>
+            </div>
+            <div class="recipe-body">
+              <div class="sec-title">Ingredients</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">400ml</span></li>
+                <li><span class="ing-name">ON Gold Standard French Vanilla Crème</span><span class="ing-amt">1 scoop</span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼ tsp</span></li>
+                <li><span class="ing-name">Vanilla extract</span><span class="ing-amt">½ tsp</span></li>
+                <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">1 tsp</span></li>
+                <li><span class="ing-name">Salt</span><span class="ing-amt">Pinch</span></li>
+              </ul>
+              <div class="sec-title">Method</div>
+              <ol class="steps">
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Blend everything</div>Add all ingredients to blender. Blend 30–60 seconds until fully smooth and no powder clumps remain.</div></li>
+                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Pour & freeze</div>Pour into Ninja Creami pint up to max fill line. Level the top flat. Freeze at back of freezer 24 hours.</div></li>
+                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Temper</div>Remove from freezer and let sit 5 minutes before spinning.</div></li>
+                <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Spin</div>Run Lite Ice Cream function. Re-spin once if crumbly or uneven.</div></li>
+              </ol>
+              <div class="tip-box"><strong>Stevia note:</strong> Your stevia is 1:1 with sugar so 1 tsp = 1 tsp sugar sweetness. Taste before freezing and adjust — ON powder is already slightly sweet so this should be enough.</div>
+            </div>
+          </div>
+
+          <!-- Recipe: Chocolate -->
+          <div class="recipe-card" id="card-chocolate">
+            <div class="recipe-header rh-brown" onclick="toggleCard('chocolate')">
+              <div>
+                <div class="recipe-tag rt-accent">Recipe 02 · Chocolate</div>
+                <div class="recipe-title">Chocolate Protein Ice Cream</div>
+                <div class="recipe-desc">Deep cocoa, fudgy and dense at 300ml</div>
+              </div>
+              <div class="recipe-toggle">⌄</div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-item"><span class="macro-val">295</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">38g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">21g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">4.5g</span><span class="macro-label">fat</span></div>
+            </div>
+            <div class="recipe-body">
+              <div class="sec-title">Ingredients</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">300ml</span></li>
+                <li><span class="ing-name">ON Gold Standard French Vanilla Crème</span><span class="ing-amt">1 scoop</span></li>
+                <li><span class="ing-name">Unsweetened cocoa powder</span><span class="ing-amt">2 tbsp</span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼ tsp</span></li>
+                <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">1½ tsp</span></li>
+                <li><span class="ing-name">Salt</span><span class="ing-amt">Pinch</span></li>
+              </ul>
+              <div class="sec-title">Method</div>
+              <ol class="steps">
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Dissolve cocoa first</div>Warm 50ml of milk in microwave 20 seconds. Whisk in cocoa powder and stevia until fully dissolved — no lumps.</div></li>
+                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Blend everything</div>Add cocoa mixture to blender with remaining milk, protein powder, skim milk powder, xanthan gum, and salt. Blend 30–60 seconds.</div></li>
+                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Taste & adjust</div>Cocoa is bitter so needs more stevia than vanilla — 1½ tsp is the starting point. Adjust before freezing.</div></li>
+                <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Pour & freeze</div>Pour into pint, level top flat, freeze 24 hours at back of freezer.</div></li>
+                <li class="step"><div class="step-num">5</div><div class="step-text"><div class="step-title">Temper & spin</div>Rest 5 mins, run Lite Ice Cream, re-spin once if needed.</div></li>
+              </ol>
+              <div class="tip-box"><strong>Tip:</strong> Dissolving cocoa in warm milk first prevents bitter gritty lumps. Dutch-process cocoa gives a deeper flavour — worth looking for at Cold Storage.</div>
+            </div>
+          </div>
+
+          <!-- Recipe: Strawberry Cheesecake -->
+          <div class="recipe-card" id="card-strawberry-protein">
+            <div class="recipe-header rh-brown" onclick="toggleCard('strawberry-protein')">
+              <div>
+                <div class="recipe-tag rt-accent">Recipe 03 · Fruity</div>
+                <div class="recipe-title">Strawberry Cheesecake</div>
+                <div class="recipe-desc">Tangy, fruity, naturally thickened by strawberry pectin</div>
+              </div>
+              <div class="recipe-toggle">⌄</div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-item"><span class="macro-val">292</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">36g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">22g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">3g</span><span class="macro-label">fat</span></div>
+            </div>
+            <div class="recipe-body">
+              <div class="sec-title">Ingredients</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">250ml</span></li>
+                <li><span class="ing-name">ON Gold Standard French Vanilla Crème</span><span class="ing-amt">1 scoop</span></li>
+                <li><span class="ing-name">Fresh strawberries, hulled</span><span class="ing-amt">80g</span></li>
+                <li><span class="ing-name">Fat free cream cheese</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼ tsp</span></li>
+                <li><span class="ing-name">Lemon juice</span><span class="ing-amt">½ tsp</span></li>
+                <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">1 tsp</span></li>
+                <li><span class="ing-name">Salt</span><span class="ing-amt">Pinch</span></li>
+              </ul>
+              <div class="sec-title">Method</div>
+              <ol class="steps">
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Blend strawberries first</div>Blend strawberries alone until completely smooth — no chunks or they freeze into icy bits.</div></li>
+                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Add everything & blend</div>Add milk, protein powder, cream cheese, skim milk powder, xanthan gum, lemon juice, stevia, and salt. Blend 30–60 seconds.</div></li>
+                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Taste & adjust</div>Should taste slightly sweeter and more tangy than you want — flavour mutes when frozen. Lemon is reduced to ½ tsp to avoid sourness overpowering.</div></li>
+                <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Pour & freeze</div>Pour into pint, check it hits the min fill line, level top, freeze 24 hours.</div></li>
+                <li class="step"><div class="step-num">5</div><div class="step-text"><div class="step-title">Temper & spin</div>Rest 5 mins, run Lite Ice Cream, re-spin once if needed.</div></li>
+              </ol>
+              <div class="tip-box"><strong>Fix for sourness:</strong> Lemon juice reduced from 1 tsp to ½ tsp and stevia increased to 1 tsp to balance the natural acidity of strawberries. If still too tart, reduce lemon further or skip it entirely.</div>
+            </div>
+          </div>
+
+        </div><!-- end all-pic -->
+      </div><!-- end cat-pic -->
+
+      <!-- ========================================================
+           CATEGORY: LOW CAL ICE CREAM
+           Recipes with NO protein powder.
+           Colour theme: blue (#1B3D56)
+      ======================================================== -->
+      <div class="cat-section" id="cat-lcic">
+
+        <div class="carousel-wrap">
+          <div class="carousel-label">
+            <span>⭐ Featured</span>
+            <span class="carousel-counter" id="cc-lcic">1 / 3</span>
+          </div>
+          <div class="carousel-outer">
+            <div class="carousel-track" id="track-lcic">
+
+              <!-- Slide 1: Frozen Strawberry -->
+              <div class="carousel-slide slide-blue" onclick="openRecipe('strawberry-lc', 'lcic')">
+                <div class="carousel-slide-inner">
+                  <div class="carousel-tag">Recipe 01 · Fruity</div>
+                  <div class="carousel-title">Frozen Strawberry Ice Cream</div>
+                  <div class="carousel-desc">Light, fruity — strawberries blended in after spinning for chunky texture</div>
+                  <div class="carousel-macros">
+                    <div><span class="carousel-macro-val">194</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">14g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">26g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">1g</span><span class="carousel-macro-label">fat</span></div>
+                  </div>
+                  <div class="carousel-ing-label">Ingredients</div>
+                  <ul class="carousel-ing-list">
+                    <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">300ml</span></li>
+                    <li><span class="carousel-ing-name">Frozen strawberries</span><span class="carousel-ing-amt">80g</span></li>
+                    <li><span class="carousel-ing-name">Fat free cream cheese</span><span class="carousel-ing-amt">1 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Skim milk powder</span><span class="carousel-ing-amt">1 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Xanthan gum</span><span class="carousel-ing-amt">¼ tsp</span></li>
+                    <li><span class="carousel-ing-name">Stevia powder (1:1)</span><span class="carousel-ing-amt">1 tsp</span></li>
+                    <li><span class="carousel-ing-name">Vanilla extract</span><span class="carousel-ing-amt">½ tsp</span></li>
+                    <li><span class="carousel-ing-name">Salt</span><span class="carousel-ing-amt">Pinch</span></li>
+                  </ul>
+                  <div class="carousel-cta">Tap to view full recipe ↓</div>
+                </div>
+              </div>
+
+              <!-- Slide 2: Milo -->
+              <div class="carousel-slide slide-blue" onclick="openRecipe('milo', 'lcic')">
+                <div class="carousel-slide-inner">
+                  <div class="carousel-tag">Recipe 02 · Milo</div>
+                  <div class="carousel-title">Milo Ice Cream</div>
+                  <div class="carousel-desc">That classic Milo taste in ice cream form — nostalgic and low cal</div>
+                  <div class="carousel-macros">
+                    <div><span class="carousel-macro-val">215</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">13g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">31g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">2g</span><span class="carousel-macro-label">fat</span></div>
+                  </div>
+                  <div class="carousel-ing-label">Ingredients</div>
+                  <ul class="carousel-ing-list">
+                    <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">300ml</span></li>
+                    <li><span class="carousel-ing-name">Milo powder</span><span class="carousel-ing-amt">3 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Fat free cream cheese</span><span class="carousel-ing-amt">1 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Skim milk powder</span><span class="carousel-ing-amt">1 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Xanthan gum</span><span class="carousel-ing-amt">¼ tsp</span></li>
+                    <li><span class="carousel-ing-name">Stevia powder (1:1)</span><span class="carousel-ing-amt">1½ tsp</span></li>
+                    <li><span class="carousel-ing-name">Vanilla extract</span><span class="carousel-ing-amt">1 tsp</span></li>
+                    <li><span class="carousel-ing-name">Salt</span><span class="carousel-ing-amt">Pinch</span></li>
+                  </ul>
+                  <div class="carousel-cta">Tap to view full recipe ↓</div>
+                </div>
+              </div>
+
+              <!-- Slide 3: Durian -->
+              <div class="carousel-slide slide-blue" onclick="openRecipe('durian', 'lcic')">
+                <div class="carousel-slide-inner">
+                  <div class="carousel-tag">Recipe 03 · Durian</div>
+                  <div class="carousel-title">Durian Ice Cream</div>
+                  <div class="carousel-desc">Natural fat from durian makes this the creamiest low cal recipe in the book</div>
+                  <div class="carousel-macros">
+                    <div><span class="carousel-macro-val">254</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">8g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">35g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">5g</span><span class="carousel-macro-label">fat</span></div>
+                  </div>
+                  <div class="carousel-ing-label">Ingredients</div>
+                  <ul class="carousel-ing-list">
+                    <li><span class="carousel-ing-name">Fresh durian flesh</span><span class="carousel-ing-amt">100g</span></li>
+                    <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">200ml</span></li>
+                    <li><span class="carousel-ing-name">Skim milk powder</span><span class="carousel-ing-amt">1 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Xanthan gum</span><span class="carousel-ing-amt">¼ tsp</span></li>
+                    <li><span class="carousel-ing-name">Stevia powder (1:1)</span><span class="carousel-ing-amt">¾ tsp</span></li>
+                    <li><span class="carousel-ing-name">Salt</span><span class="carousel-ing-amt">Pinch</span></li>
+                  </ul>
+                  <div class="carousel-cta">Tap to view full recipe ↓</div>
+                </div>
+              </div>
+
+            </div><!-- end track-lcic -->
+          </div>
+          <div class="carousel-controls">
+            <button class="carousel-btn" onclick="move('lcic', -1)">‹</button>
+            <div class="dots" id="dots-lcic">
+              <button class="dot active" onclick="go('lcic', 0)"></button>
+              <button class="dot" onclick="go('lcic', 1)"></button>
+              <button class="dot" onclick="go('lcic', 2)"></button>
+            </div>
+            <button class="carousel-btn" onclick="move('lcic', 1)">›</button>
+          </div>
+        </div>
+
+        <button class="view-all-btn" id="vab-lcic" onclick="toggleAll('lcic')">
+          <div>All Low Cal Ice Cream Recipes <span class="sub">— tap to expand</span></div>
+          <span class="arrow">⌄</span>
+        </button>
+
+        <div class="all-recipes" id="all-lcic">
+
+          <!-- Recipe: Frozen Strawberry -->
+          <div class="recipe-card" id="card-strawberry-lc">
+            <div class="recipe-header rh-blue" onclick="toggleCard('strawberry-lc')">
+              <div>
+                <div class="recipe-tag rt-blue">Recipe 01 · Fruity</div>
+                <div class="recipe-title">Frozen Strawberry Ice Cream</div>
+                <div class="recipe-desc">Light, fruity — strawberries added after spinning</div>
+              </div>
+              <div class="recipe-toggle">⌄</div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-item"><span class="macro-val">194</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">14g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">26g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">1g</span><span class="macro-label">fat</span></div>
+            </div>
+            <div class="recipe-body">
+              <div class="sec-title">Ingredients</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">300ml</span></li>
+                <li><span class="ing-name">Frozen strawberries (for mix-in after spinning)</span><span class="ing-amt">80g</span></li>
+                <li><span class="ing-name">Fat free cream cheese</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼ tsp</span></li>
+                <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">1 tsp</span></li>
+                <li><span class="ing-name">Vanilla extract</span><span class="ing-amt">½ tsp</span></li>
+                <li><span class="ing-name">Salt</span><span class="ing-amt">Pinch</span></li>
+              </ul>
+              <div class="sec-title">Method</div>
+              <ol class="steps">
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Make the base — no strawberries yet</div>Blend milk, cream cheese, skim milk powder, xanthan gum, stevia, vanilla extract, and salt until smooth. Do NOT add strawberries at this stage.</div></li>
+                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Pour & freeze</div>Pour plain base into Ninja Creami pint up to max fill line. Level top flat. Freeze at back of freezer 24 hours.</div></li>
+                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Temper</div>Remove from freezer and let sit 5 minutes on the counter.</div></li>
+                <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Spin the base first</div>Run Lite Ice Cream function on the plain base. Let the full cycle complete.</div></li>
+                <li class="step"><div class="step-num">5</div><div class="step-text"><div class="step-title">Add strawberries & use Mix-In</div>Lightly thaw the frozen strawberries — just enough to be pliable but still cold. Make a well in the centre of the spun ice cream. Add strawberries and run the Mix-In function. This gives chunky real strawberry pieces throughout.</div></li>
+                <li class="step"><div class="step-num">6</div><div class="step-text"><div class="step-title">Serve immediately</div>Serve straight from the pint. The strawberry chunks will be slightly icy and chewy — that contrast is what makes this recipe.</div></li>
+              </ol>
+              <div class="tip-box"><strong>Why add strawberries after?</strong> Adding post-spin gives you distinct chunky fruit pieces instead of a uniformly pink base. The contrast of creamy base and slightly icy chunks is the best part of this recipe.</div>
+            </div>
+          </div>
+
+          <!-- Recipe: Milo -->
+          <div class="recipe-card" id="card-milo">
+            <div class="recipe-header rh-blue" onclick="toggleCard('milo')">
+              <div>
+                <div class="recipe-tag rt-blue">Recipe 02 · Milo</div>
+                <div class="recipe-title">Milo Ice Cream</div>
+                <div class="recipe-desc">Classic Milo taste — nostalgic and low cal</div>
+              </div>
+              <div class="recipe-toggle">⌄</div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-item"><span class="macro-val">215</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">13g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">31g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">2g</span><span class="macro-label">fat</span></div>
+            </div>
+            <div class="recipe-body">
+              <div class="sec-title">Ingredients</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">300ml</span></li>
+                <li><span class="ing-name">Milo powder</span><span class="ing-amt">3 tbsp</span></li>
+                <li><span class="ing-name">Fat free cream cheese</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼ tsp</span></li>
+                <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">1½ tsp</span></li>
+                <li><span class="ing-name">Vanilla extract</span><span class="ing-amt">1 tsp</span></li>
+                <li><span class="ing-name">Salt</span><span class="ing-amt">Pinch</span></li>
+              </ul>
+              <div class="sec-title">Method</div>
+              <ol class="steps">
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Dissolve Milo first</div>Warm 50ml of milk in microwave 20 seconds. Add Milo powder and stir until fully dissolved — Milo leaves gritty lumps if mixed in cold milk.</div></li>
+                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Blend everything</div>Add Milo mixture to blender with remaining milk, cream cheese, skim milk powder, xanthan gum, stevia, vanilla, and salt. Blend 30–60 seconds until smooth.</div></li>
+                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Taste & adjust</div>Milo already has sugar but freezing mutes it significantly. The 1½ tsp stevia and 3 tbsp Milo should give a strong enough flavour — taste and adjust if needed.</div></li>
+                <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Pour & freeze</div>Pour into Ninja Creami pint, level top flat, freeze 24 hours at back of freezer.</div></li>
+                <li class="step"><div class="step-num">5</div><div class="step-text"><div class="step-title">Temper & spin</div>Rest 5 mins on counter, run Lite Ice Cream, re-spin once if crumbly.</div></li>
+                <li class="step"><div class="step-num">6</div><div class="step-text"><div class="step-title">Optional — Milo Dinosaur topping</div>Sprinkle dry Milo powder on top after spinning for that classic Milo Dinosaur look.</div></li>
+              </ol>
+              <div class="tip-box"><strong>Fix for blandness:</strong> Bumped Milo from 2 to 3 tbsp and stevia from ½ to 1½ tsp. Milo flavour fades significantly when frozen so you need more than you think.</div>
+            </div>
+          </div>
+
+          <!-- Recipe: Durian -->
+          <div class="recipe-card" id="card-durian">
+            <div class="recipe-header rh-blue" onclick="toggleCard('durian')">
+              <div>
+                <div class="recipe-tag rt-blue">Recipe 03 · Durian</div>
+                <div class="recipe-title">Durian Ice Cream</div>
+                <div class="recipe-desc">Naturally creamy from durian fat — no cream cheese needed</div>
+              </div>
+              <div class="recipe-toggle">⌄</div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-item"><span class="macro-val">254</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">8g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">35g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">5g</span><span class="macro-label">fat</span></div>
+            </div>
+            <div class="recipe-body">
+              <div class="sec-title">Ingredients</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">Fresh durian flesh (seeds removed)</span><span class="ing-amt">100g</span></li>
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">200ml</span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼ tsp</span></li>
+                <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">¾ tsp</span></li>
+                <li><span class="ing-name">Salt</span><span class="ing-amt">Pinch</span></li>
+              </ul>
+              <div class="sec-title">Method</div>
+              <ol class="steps">
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Blend durian first</div>Blend durian flesh alone until completely smooth. No seeds, no fibrous bits — strain if needed.</div></li>
+                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Add everything & blend</div>Add milk, skim milk powder, xanthan gum, stevia, and salt to the blender. Blend 30–60 seconds until silky smooth.</div></li>
+                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Taste & adjust</div>Durian is naturally sweet and pungent — taste before freezing. ¾ tsp stevia should be enough but adjust if needed. Go slightly sweeter than you want since freezing mutes flavour.</div></li>
+                <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Pour & freeze</div>Pour into Ninja Creami pint, level top flat, freeze 24 hours at back of freezer.</div></li>
+                <li class="step"><div class="step-num">5</div><div class="step-text"><div class="step-title">Temper & spin</div>Rest 5 mins on counter. Run Lite Ice Cream. Re-spin once if needed.</div></li>
+              </ol>
+              <div class="tip-box"><strong>Why no cream cheese?</strong> Durian has natural fat (~5g per 100g) which acts as a built-in emulsifier and creaminess booster. This will be your smoothest spinning low cal recipe. Milk is reduced to 200ml to account for the volume and moisture from the durian flesh itself.</div>
+            </div>
+          </div>
+
+        </div><!-- end all-lcic -->
+      </div><!-- end cat-lcic -->
+
+      <!-- ========================================================
+           CATEGORY: MEALS
+           Daily meal plan recipes.
+           Colour theme: green (#1E4030)
+      ======================================================== -->
+      <div class="cat-section" id="cat-meals">
+
+        <div class="carousel-wrap">
+          <div class="carousel-label">
+            <span>⭐ Featured Meals</span>
+            <span class="carousel-counter" id="cc-meals">1 / 5</span>
+          </div>
+          <div class="carousel-outer">
+            <div class="carousel-track" id="track-meals">
+
+              <!-- Slide 1: Breakfast -->
+              <div class="carousel-slide slide-green" onclick="openRecipe('breakfast', 'meals')">
+                <div class="carousel-slide-inner">
+                  <div class="carousel-tag">Breakfast · Daily</div>
+                  <div class="carousel-title">Scrambled Eggs & Toast</div>
+                  <div class="carousel-desc">Simple, fast, consistent — the anchor meal every morning</div>
+                  <div class="carousel-macros">
+                    <div><span class="carousel-macro-val">290</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">21g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">15g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">14g</span><span class="carousel-macro-label">fat</span></div>
+                  </div>
+                  <div class="carousel-ing-label">Ingredients</div>
+                  <ul class="carousel-ing-list">
+                    <li><span class="carousel-ing-name">Eggs</span><span class="carousel-ing-amt">3 large</span></li>
+                    <li><span class="carousel-ing-name">White bread</span><span class="carousel-ing-amt">1 slice</span></li>
+                    <li><span class="carousel-ing-name">Salt & pepper</span><span class="carousel-ing-amt">To taste</span></li>
+                  </ul>
+                  <div class="carousel-cta">Tap to view full recipe ↓</div>
+                </div>
+              </div>
+
+              <!-- Slide 2: Lunch Rice -->
+              <div class="carousel-slide slide-green" onclick="openRecipe('lunch-rice', 'meals')">
+                <div class="carousel-slide-inner">
+                  <div class="carousel-tag">Lunch · Option A</div>
+                  <div class="carousel-title">Air Fried Fillet & Rice</div>
+                  <div class="carousel-desc">The daily workhorse — high protein, easy to prep in bulk</div>
+                  <div class="carousel-macros">
+                    <div><span class="carousel-macro-val">400</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">40g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">50g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">6g</span><span class="carousel-macro-label">fat</span></div>
+                  </div>
+                  <div class="carousel-ing-label">Ingredients</div>
+                  <ul class="carousel-ing-list">
+                    <li><span class="carousel-ing-name">Inner fillet</span><span class="carousel-ing-amt">150g</span></li>
+                    <li><span class="carousel-ing-name">White rice (cooked)</span><span class="carousel-ing-amt">150g</span></li>
+                    <li><span class="carousel-ing-name">Salad or cucumber</span><span class="carousel-ing-amt">Side</span></li>
+                    <li><span class="carousel-ing-name">Seasoning of choice</span><span class="carousel-ing-amt">To taste</span></li>
+                  </ul>
+                  <div class="carousel-cta">Tap to view full recipe ↓</div>
+                </div>
+              </div>
+
+              <!-- Slide 3: Lunch Potato -->
+              <div class="carousel-slide slide-green" onclick="openRecipe('lunch-potato', 'meals')">
+                <div class="carousel-slide-inner">
+                  <div class="carousel-tag">Lunch · Option B</div>
+                  <div class="carousel-title">Air Fried Fillet & Potato</div>
+                  <div class="carousel-desc">Swap rice for potato — more filling, slightly fewer carbs</div>
+                  <div class="carousel-macros">
+                    <div><span class="carousel-macro-val">390</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">40g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">36g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">6g</span><span class="carousel-macro-label">fat</span></div>
+                  </div>
+                  <div class="carousel-ing-label">Ingredients</div>
+                  <ul class="carousel-ing-list">
+                    <li><span class="carousel-ing-name">Inner fillet</span><span class="carousel-ing-amt">150g</span></li>
+                    <li><span class="carousel-ing-name">Russet potato</span><span class="carousel-ing-amt">~200g</span></li>
+                    <li><span class="carousel-ing-name">Cumin, paprika, garlic powder</span><span class="carousel-ing-amt">To taste</span></li>
+                    <li><span class="carousel-ing-name">Mixed salad</span><span class="carousel-ing-amt">Side</span></li>
+                  </ul>
+                  <div class="carousel-cta">Tap to view full recipe ↓</div>
+                </div>
+              </div>
+
+              <!-- Slide 4: Dinner -->
+              <div class="carousel-slide slide-green" onclick="openRecipe('dinner', 'meals')">
+                <div class="carousel-slide-inner">
+                  <div class="carousel-tag">Dinner · Daily</div>
+                  <div class="carousel-title">Fillet, Sweet Potato & Veg</div>
+                  <div class="carousel-desc">Light and filling — sweet potato keeps you fuller longer</div>
+                  <div class="carousel-macros">
+                    <div><span class="carousel-macro-val">370</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">40g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">28g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">6g</span><span class="carousel-macro-label">fat</span></div>
+                  </div>
+                  <div class="carousel-ing-label">Ingredients</div>
+                  <ul class="carousel-ing-list">
+                    <li><span class="carousel-ing-name">Inner fillet</span><span class="carousel-ing-amt">150g</span></li>
+                    <li><span class="carousel-ing-name">Sweet potato</span><span class="carousel-ing-amt">200g</span></li>
+                    <li><span class="carousel-ing-name">Broccoli or any veg</span><span class="carousel-ing-amt">200g</span></li>
+                    <li><span class="carousel-ing-name">Soy or oyster sauce</span><span class="carousel-ing-amt">To taste</span></li>
+                  </ul>
+                  <div class="carousel-cta">Tap to view full recipe ↓</div>
+                </div>
+              </div>
+
+              <!-- Slide 5: Protein Shake -->
+              <div class="carousel-slide slide-green" onclick="openRecipe('shake', 'meals')">
+                <div class="carousel-slide-inner">
+                  <div class="carousel-tag">Snack · 3–4pm</div>
+                  <div class="carousel-title">Protein Shake</div>
+                  <div class="carousel-desc">Mid-afternoon shake — move to post-workout if training</div>
+                  <div class="carousel-macros">
+                    <div><span class="carousel-macro-val">120</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">24g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">3g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">1g</span><span class="carousel-macro-label">fat</span></div>
+                  </div>
+                  <div class="carousel-ing-label">Ingredients</div>
+                  <ul class="carousel-ing-list">
+                    <li><span class="carousel-ing-name">ON French Vanilla Crème</span><span class="carousel-ing-amt">1 scoop</span></li>
+                    <li><span class="carousel-ing-name">Cold water or skinny milk</span><span class="carousel-ing-amt">250ml</span></li>
+                  </ul>
+                  <div class="carousel-cta">Tap to view full recipe ↓</div>
+                </div>
+              </div>
+
+            </div><!-- end track-meals -->
+          </div>
+          <div class="carousel-controls">
+            <button class="carousel-btn" onclick="move('meals', -1)">‹</button>
+            <div class="dots" id="dots-meals">
+              <button class="dot active" onclick="go('meals', 0)"></button>
+              <button class="dot" onclick="go('meals', 1)"></button>
+              <button class="dot" onclick="go('meals', 2)"></button>
+              <button class="dot" onclick="go('meals', 3)"></button>
+              <button class="dot" onclick="go('meals', 4)"></button>
+            </div>
+            <button class="carousel-btn" onclick="move('meals', 1)">›</button>
+          </div>
+        </div>
+
+        <button class="view-all-btn" id="vab-meals" onclick="toggleAll('meals')">
+          <div>All Meal Recipes <span class="sub">— tap to expand</span></div>
+          <span class="arrow">⌄</span>
+        </button>
+
+        <div class="all-recipes" id="all-meals">
+
+          <!-- Recipe: Breakfast -->
+          <div class="recipe-card" id="card-breakfast">
+            <div class="recipe-header rh-green" onclick="toggleCard('breakfast')">
+              <div>
+                <div class="recipe-tag rt-green">Breakfast · Daily</div>
+                <div class="recipe-title">Scrambled Eggs & Toast</div>
+                <div class="recipe-desc">Simple, fast — cook any style you like</div>
+              </div>
+              <div class="recipe-toggle">⌄</div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-item"><span class="macro-val">290</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">21g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">15g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">14g</span><span class="macro-label">fat</span></div>
+            </div>
+            <div class="recipe-body">
+              <div class="sec-title">Ingredients</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">Eggs</span><span class="ing-amt">3 large</span></li>
+                <li><span class="ing-name">White bread</span><span class="ing-amt">1 slice</span></li>
+                <li><span class="ing-name">Salt & pepper</span><span class="ing-amt">To taste</span></li>
+              </ul>
+              <div class="sec-title">Method</div>
+              <ol class="steps">
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Toast the bread</div>Pop the slice in the toaster while you prep the eggs.</div></li>
+                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Scramble the eggs</div>Crack 3 eggs into a pan on medium-low heat. Stir continuously — low and slow gives creamier scrambled eggs. Remove just before fully set.</div></li>
+                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Serve</div>Plate eggs on or beside the toast. Add sriracha or soy sauce for flavour without extra calories.</div></li>
+              </ol>
+              <div class="tip-box"><strong>Variations:</strong> Poached or boiled eggs save a bit of fat. Soy sauce or sriracha adds great flavour with almost zero calories.</div>
+            </div>
+          </div>
+
+          <!-- Recipe: Lunch Rice -->
+          <div class="recipe-card" id="card-lunch-rice">
+            <div class="recipe-header rh-green" onclick="toggleCard('lunch-rice')">
+              <div>
+                <div class="recipe-tag rt-green">Lunch · Option A</div>
+                <div class="recipe-title">Air Fried Fillet & Rice</div>
+                <div class="recipe-desc">Classic — 3 seasoning options</div>
+              </div>
+              <div class="recipe-toggle">⌄</div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-item"><span class="macro-val">400</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">40g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">50g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">6g</span><span class="macro-label">fat</span></div>
+            </div>
+            <div class="recipe-body">
+              <div class="sec-title">Ingredients</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">Inner fillet (beef tenderloin)</span><span class="ing-amt">150g</span></li>
+                <li><span class="ing-name">White rice (cooked)</span><span class="ing-amt">150g</span></li>
+                <li><span class="ing-name">Salad or cucumber</span><span class="ing-amt">Side</span></li>
+              </ul>
+              <div class="sec-title">Seasoning Options</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">Option A — Simple</span><span class="ing-amt">Salt, pepper, garlic powder</span></li>
+                <li><span class="ing-name">Option B — Soy garlic</span><span class="ing-amt">Soy sauce + minced garlic + pepper</span></li>
+                <li><span class="ing-name">Option C — Spiced</span><span class="ing-amt">Cumin + paprika + garlic powder + salt</span></li>
+              </ul>
+              <div class="sec-title">Method</div>
+              <ol class="steps">
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Season the fillet</div>Pat dry with paper towel — moisture stops it browning. Coat with your chosen seasoning on all sides.</div></li>
+                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Air fry</div>Air fry at 200°C for 10–12 minutes, flipping halfway. Rest 3 minutes before cutting.</div></li>
+                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Reheat rice</div>Cook rice night before. Reheat in microwave 90 seconds with a splash of water.</div></li>
+                <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Serve</div>Plate fillet, rice, and salad.</div></li>
+              </ol>
+              <div class="tip-box"><strong>Meal prep tip:</strong> Air fry 3–4 fillets at once. Store in fridge up to 3 days. Reheat in air fryer 3 mins at 180°C.</div>
+            </div>
+          </div>
+
+          <!-- Recipe: Lunch Potato -->
+          <div class="recipe-card" id="card-lunch-potato">
+            <div class="recipe-header rh-green" onclick="toggleCard('lunch-potato')">
+              <div>
+                <div class="recipe-tag rt-green">Lunch · Option B</div>
+                <div class="recipe-title">Air Fried Fillet & Potato</div>
+                <div class="recipe-desc">Swap rice for potato — more filling per calorie</div>
+              </div>
+              <div class="recipe-toggle">⌄</div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-item"><span class="macro-val">390</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">40g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">36g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">6g</span><span class="macro-label">fat</span></div>
+            </div>
+            <div class="recipe-body">
+              <div class="sec-title">Ingredients</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">Inner fillet</span><span class="ing-amt">150g</span></li>
+                <li><span class="ing-name">Russet potato</span><span class="ing-amt">~200g</span></li>
+                <li><span class="ing-name">Mixed salad</span><span class="ing-amt">Side</span></li>
+                <li><span class="ing-name">Cumin, paprika, garlic powder, salt</span><span class="ing-amt">To taste</span></li>
+              </ul>
+              <div class="sec-title">Method</div>
+              <ol class="steps">
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Prep potato wedges</div>Cut into wedges. Season with paprika, garlic powder, salt. No oil needed in air fryer.</div></li>
+                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Air fry potato</div>Air fry at 200°C for 18–20 minutes, shaking halfway. Crispy outside, soft inside.</div></li>
+                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Air fry fillet</div>Pat dry, season, air fry at 200°C for 10–12 minutes flipping halfway. Rest 3 minutes.</div></li>
+                <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Serve</div>Plate everything together.</div></li>
+              </ol>
+              <div class="tip-box"><strong>Tip:</strong> Put wedges in first for 8 minutes, then add fillet for the remaining 12 minutes — both done at the same time.</div>
+            </div>
+          </div>
+
+          <!-- Recipe: Dinner -->
+          <div class="recipe-card" id="card-dinner">
+            <div class="recipe-header rh-green" onclick="toggleCard('dinner')">
+              <div>
+                <div class="recipe-tag rt-green">Dinner · Daily</div>
+                <div class="recipe-title">Fillet, Sweet Potato & Veg</div>
+                <div class="recipe-desc">Light, filling, high protein — the perfect cut dinner</div>
+              </div>
+              <div class="recipe-toggle">⌄</div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-item"><span class="macro-val">370</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">40g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">28g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">6g</span><span class="macro-label">fat</span></div>
+            </div>
+            <div class="recipe-body">
+              <div class="sec-title">Ingredients</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">Inner fillet</span><span class="ing-amt">150g</span></li>
+                <li><span class="ing-name">Sweet potato</span><span class="ing-amt">200g</span></li>
+                <li><span class="ing-name">Broccoli, bok choy, or any veg</span><span class="ing-amt">200g</span></li>
+                <li><span class="ing-name">Soy sauce or oyster sauce</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Garlic powder, salt, pepper</span><span class="ing-amt">To taste</span></li>
+              </ul>
+              <div class="sec-title">Method</div>
+              <ol class="steps">
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Prep sweet potato</div>Cut into cubes or wedges. Season lightly with salt. Air fry at 200°C for 16–18 minutes until caramelised outside, soft inside.</div></li>
+                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Steam the veg</div>Steam or microwave veg 4–5 minutes until just tender. Season with soy or oyster sauce.</div></li>
+                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Air fry fillet</div>Season with garlic powder, salt, pepper. Air fry at 200°C for 10–12 minutes flipping halfway. Rest 3 minutes before slicing.</div></li>
+                <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Serve</div>Plate everything. Swap sweet potato for regular potato or rice if you want more carbs.</div></li>
+              </ol>
+              <div class="tip-box"><strong>Tip:</strong> Sweet potato keeps you fuller longer — great choice before bed so you don't feel hungry overnight.</div>
+            </div>
+          </div>
+
+          <!-- Recipe: Protein Shake -->
+          <div class="recipe-card" id="card-shake">
+            <div class="recipe-header rh-green" onclick="toggleCard('shake')">
+              <div>
+                <div class="recipe-tag rt-green">Snack · 3–4pm</div>
+                <div class="recipe-title">Protein Shake</div>
+                <div class="recipe-desc">Simple mid-afternoon shake</div>
+              </div>
+              <div class="recipe-toggle">⌄</div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-item"><span class="macro-val">120</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">24g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">3g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">1g</span><span class="macro-label">fat</span></div>
+            </div>
+            <div class="recipe-body">
+              <div class="sec-title">Ingredients</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">ON Gold Standard French Vanilla Crème</span><span class="ing-amt">1 scoop (31.5g)</span></li>
+                <li><span class="ing-name">Cold water or Farm Fresh Skinny Milk</span><span class="ing-amt">250ml</span></li>
+              </ul>
+              <div class="sec-title">Method</div>
+              <ol class="steps">
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Shake or blend</div>Add liquid first, then powder. Shake 20–30 seconds or blend for a smoother result. Serve cold.</div></li>
+              </ol>
+              <div class="tip-box"><strong>Note:</strong> With water = ~120 kcal. With 250ml skinny milk = ~230 kcal, 34g protein. Move to right after your workout if you start training.</div>
+            </div>
+          </div>
+
+        </div><!-- end all-meals -->
+      </div><!-- end cat-meals -->
+
+    </div><!-- end recipes section -->
+
+    <!-- ==========================================================
+         TIPS SECTION
+    ========================================================== -->
+    <div class="section" id="tips">
+      <h2 class="page-title">Ninja Creami Tips</h2>
+      <p class="page-sub">Everything you need for a perfect spin every time</p>
+
+      <!-- 8-card tips grid -->
+      <div class="tips-grid">
+        <div class="tip-card"><div class="tip-icon">🧊</div><div class="tip-card-title">Always use Lite Ice Cream</div><p>Low fat bases respond better to Lite Ice Cream, not the regular function.</p></div>
+        <div class="tip-card"><div class="tip-icon">⏱️</div><div class="tip-card-title">Temper 5 minutes</div><p>Let the pint sit 5 minutes before spinning. Slightly thawed = noticeably creamier result.</p></div>
+        <div class="tip-card"><div class="tip-icon">📐</div><div class="tip-card-title">Flat top when freezing</div><p>No dome on the surface. A flat top means the blade spins evenly across the whole pint.</p></div>
+        <div class="tip-card"><div class="tip-icon">❄️</div><div class="tip-card-title">Back of the freezer</div><p>Place pints at the back, not the door. More consistent temp = better freeze = better spin.</p></div>
+        <div class="tip-card"><div class="tip-icon">🔄</div><div class="tip-card-title">Re-spin is your friend</div><p>If the result looks crumbly after the first spin, hit Re-spin once. Usually all it takes.</p></div>
+        <div class="tip-card"><div class="tip-icon">🍫</div><div class="tip-card-title">Dissolve powders in warm milk</div><p>Always warm a small amount of milk and dissolve cocoa or Milo first. Prevents gritty lumps.</p></div>
+        <div class="tip-card"><div class="tip-icon">🧪</div><div class="tip-card-title">Taste before freezing</div><p>Flavour mutes when frozen. Base should taste slightly sweeter than you want the final result.</p></div>
+        <div class="tip-card"><div class="tip-icon">📅</div><div class="tip-card-title">Prep the night before</div><p>Needs 24 hours to freeze solid. Prep tomorrow's pint right after eating today's.</p></div>
+      </div>
+
+      <!-- Texture booster reference card -->
+      <div class="recipe-card">
+        <div class="recipe-header rh-brown" style="cursor:default;">
+          <div>
+            <div class="recipe-tag rt-accent">Reference</div>
+            <div class="recipe-title">The Low Fat Creami Stack</div>
+            <div class="recipe-desc">How to get creamy results without the fat</div>
+          </div>
+        </div>
+        <div class="recipe-body" style="display:block;">
+          <ul class="ing-list">
+            <li><span class="ing-name">Xanthan gum (¼ tsp) — prevents large ice crystals forming</span><span class="ing-amt">~0 kcal</span></li>
+            <li><span class="ing-name">Skim milk powder (1 tbsp) — reduces free water in the base</span><span class="ing-amt">~15 kcal</span></li>
+            <li><span class="ing-name">Fat free cream cheese (1 tbsp) — emulsifies, adds body</span><span class="ing-amt">~15 kcal</span></li>
+            <li><span class="ing-name">Stevia powder (1:1) — adjust to taste, always taste before freezing</span><span class="ing-amt">~0 kcal</span></li>
+          </ul>
+          <div class="tip-box">
+            <strong>Stevia guide (1:1 ratio):</strong> Vanilla = 1 tsp · Chocolate = 1½ tsp · Strawberry cheesecake = 1 tsp · Milo = 1½ tsp · Durian = ¾ tsp (naturally sweet). Always taste before freezing — frozen things taste less sweet so the base should taste slightly sweeter than your target.
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end tips section -->
+
+  </div><!-- end content -->
+
+  <!-- ============================================================
+       JAVASCRIPT
+       All interactivity is handled here.
+
+       FUNCTIONS:
+       - move(id, dir)       : shift carousel left (-1) or right (+1)
+       - go(id, index)       : jump to a specific carousel slide
+       - update(id)          : syncs track position, counter, and dots
+       - toggleAll(id)       : show/hide the full recipe list
+       - toggleCard(id)      : expand/collapse an individual recipe card
+       - openRecipe(id, cat) : opens the list + expands a specific card
+                               (called when tapping a carousel slide)
+       - showSection(id, btn): switches between Recipes and Tips
+       - showCat(id, btn)    : switches between recipe categories
+  ============================================================ -->
+  <script>
+
+    // Carousel state: tracks current slide and total slides per carousel
+    const carousels = {
+      pic:   { cur: 0, tot: 3 },  // Protein Ice Cream: 3 recipes
+      lcic:  { cur: 0, tot: 3 },  // Low Cal Ice Cream: 3 recipes
+      meals: { cur: 0, tot: 5 }   // Meals: 5 recipes
+    };
+
+    // Move carousel by direction (-1 = prev, +1 = next), wraps around
+    function move(id, d) {
+      const c = carousels[id];
+      c.cur = (c.cur + d + c.tot) % c.tot;
+      update(id);
+    }
+
+    // Jump directly to a specific slide index
+    function go(id, i) {
+      carousels[id].cur = i;
+      update(id);
+    }
+
+    // Sync the carousel track position, counter text, and dot states
+    function update(id) {
+      const c = carousels[id];
+      document.getElementById('track-' + id).style.transform = `translateX(-${c.cur * 100}%)`;
+      document.getElementById('cc-' + id).textContent = `${c.cur + 1} / ${c.tot}`;
+      document.querySelectorAll(`#dots-${id} .dot`).forEach((d, i) => d.classList.toggle('active', i === c.cur));
+    }
+
+    // Toggle the "view all" recipe list open/closed
+    function toggleAll(id) {
+      const el  = document.getElementById('all-' + id);
+      const btn = document.getElementById('vab-' + id);
+      const open = el.classList.toggle('open');
+      btn.classList.toggle('open', open);
+      btn.querySelector('.sub').textContent = open ? '— tap to collapse' : '— tap to expand';
+    }
+
+    // Expand or collapse an individual recipe card
+    function toggleCard(id) {
+      document.getElementById('card-' + id).classList.toggle('open');
+    }
+
+    // Called when tapping a carousel slide — opens the list and scrolls to that recipe
+    function openRecipe(id, catId) {
+      const card = document.getElementById('card-' + id);
+      if (!card) return;
+      const allContainer = document.getElementById('all-' + catId);
+      const btn = document.getElementById('vab-' + catId);
+      // Open the list if not already open
+      if (!allContainer.classList.contains('open')) {
+        allContainer.classList.add('open');
+        btn.classList.add('open');
+        btn.querySelector('.sub').textContent = '— tap to collapse';
+      }
+      // Expand the card if not already open
+      if (!card.classList.contains('open')) card.classList.add('open');
+      // Smooth scroll to the card
+      setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+    }
+
+    // Switch between top-level sections (Recipes / Tips)
+    function showSection(id, btn) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // Switch between recipe categories (Protein / Low Cal / Meals)
+    function showCat(id, btn) {
+      document.querySelectorAll('.cat-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+      document.getElementById('cat-' + id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+  </script>
+
+</body>
+</html>

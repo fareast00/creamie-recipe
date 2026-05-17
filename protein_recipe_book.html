@@ -399,6 +399,7 @@
     .ing-list li:last-child { border-bottom: none; }
     .ing-name { color: var(--brown); }
     .ing-amt  { color: var(--accent); font-weight: 500; }
+    .ing-cal  { color: var(--muted); font-size: 11px; font-weight: 400; margin-left: 3px; }
 
     /* Numbered steps list */
     .steps { list-style: none; margin-bottom: 18px; }
@@ -460,8 +461,8 @@
     <h1>Fa'iz <em>Recipe</em> Book</h1>
     <p class="hero-sub">Protein Ice Cream · Low Cal Ice Cream · Meals</p>
     <div class="hero-stats">
-      <div class="hero-stat"><span class="hero-stat-val">3</span><span class="hero-stat-label">Protein Ice Cream</span></div>
-      <div class="hero-stat"><span class="hero-stat-val">3</span><span class="hero-stat-label">Low Cal Ice Cream</span></div>
+      <div class="hero-stat"><span class="hero-stat-val">4</span><span class="hero-stat-label">Protein Ice Cream</span></div>
+      <div class="hero-stat"><span class="hero-stat-val">4</span><span class="hero-stat-label">Low Cal Ice Cream</span></div>
       <div class="hero-stat"><span class="hero-stat-val">5</span><span class="hero-stat-label">Meals</span></div>
     </div>
   </div>
@@ -483,8 +484,8 @@
 
       <!-- Category tab bar: switches between the 3 recipe groups -->
       <div class="cat-tabs">
-        <button class="cat-tab active" onclick="showCat('pic', this)">💪 Protein Ice Cream <span class="count">(3)</span></button>
-        <button class="cat-tab" onclick="showCat('lcic', this)">🧊 Low Cal Ice Cream <span class="count">(3)</span></button>
+        <button class="cat-tab active" onclick="showCat('pic', this)">💪 Protein Ice Cream <span class="count">(4)</span></button>
+        <button class="cat-tab" onclick="showCat('lcic', this)">🧊 Low Cal Ice Cream <span class="count">(4)</span></button>
         <button class="cat-tab" onclick="showCat('meals', this)">🍳 Meals <span class="count">(5)</span></button>
       </div>
 
@@ -499,7 +500,7 @@
         <div class="carousel-wrap">
           <div class="carousel-label">
             <span>⭐ Featured</span>
-            <span class="carousel-counter" id="cc-pic">1 / 3</span>
+            <span class="carousel-counter" id="cc-pic">1 / 4</span>
           </div>
           <div class="carousel-outer">
             <div class="carousel-track" id="track-pic">
@@ -511,14 +512,14 @@
                   <div class="carousel-title">Vanilla Protein Ice Cream</div>
                   <div class="carousel-desc">Clean, simple, high protein — xanthan gum & skim milk powder base</div>
                   <div class="carousel-macros">
-                    <div><span class="carousel-macro-val">300</span><span class="carousel-macro-label">kcal</span></div>
-                    <div><span class="carousel-macro-val">38g</span><span class="carousel-macro-label">protein</span></div>
-                    <div><span class="carousel-macro-val">22g</span><span class="carousel-macro-label">carbs</span></div>
-                    <div><span class="carousel-macro-val">4.5g</span><span class="carousel-macro-label">fat</span></div>
+                    <div><span class="carousel-macro-val">235</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">35g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">18g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">2g</span><span class="carousel-macro-label">fat</span></div>
                   </div>
                   <div class="carousel-ing-label">Ingredients</div>
                   <ul class="carousel-ing-list">
-                    <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">400ml</span></li>
+                    <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">250ml</span></li>
                     <li><span class="carousel-ing-name">ON French Vanilla Crème</span><span class="carousel-ing-amt">1 scoop</span></li>
                     <li><span class="carousel-ing-name">Skim milk powder</span><span class="carousel-ing-amt">1 tbsp</span></li>
                     <li><span class="carousel-ing-name">Xanthan gum</span><span class="carousel-ing-amt">¼ tsp</span></li>
@@ -537,14 +538,14 @@
                   <div class="carousel-title">Chocolate Protein Ice Cream</div>
                   <div class="carousel-desc">Deep cocoa flavour, fudgy and dense at 300ml</div>
                   <div class="carousel-macros">
-                    <div><span class="carousel-macro-val">295</span><span class="carousel-macro-label">kcal</span></div>
-                    <div><span class="carousel-macro-val">38g</span><span class="carousel-macro-label">protein</span></div>
-                    <div><span class="carousel-macro-val">21g</span><span class="carousel-macro-label">carbs</span></div>
-                    <div><span class="carousel-macro-val">4.5g</span><span class="carousel-macro-label">fat</span></div>
+                    <div><span class="carousel-macro-val">260</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">37g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">24g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">3g</span><span class="carousel-macro-label">fat</span></div>
                   </div>
                   <div class="carousel-ing-label">Ingredients</div>
                   <ul class="carousel-ing-list">
-                    <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">300ml</span></li>
+                    <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">250ml</span></li>
                     <li><span class="carousel-ing-name">ON French Vanilla Crème</span><span class="carousel-ing-amt">1 scoop</span></li>
                     <li><span class="carousel-ing-name">Unsweetened cocoa powder</span><span class="carousel-ing-amt">2 tbsp</span></li>
                     <li><span class="carousel-ing-name">Skim milk powder</span><span class="carousel-ing-amt">1 tbsp</span></li>
@@ -563,10 +564,10 @@
                   <div class="carousel-title">Strawberry Cheesecake</div>
                   <div class="carousel-desc">Tangy, fruity and creamy — naturally thickened by fresh strawberry pectin</div>
                   <div class="carousel-macros">
-                    <div><span class="carousel-macro-val">292</span><span class="carousel-macro-label">kcal</span></div>
-                    <div><span class="carousel-macro-val">36g</span><span class="carousel-macro-label">protein</span></div>
-                    <div><span class="carousel-macro-val">22g</span><span class="carousel-macro-label">carbs</span></div>
-                    <div><span class="carousel-macro-val">3g</span><span class="carousel-macro-label">fat</span></div>
+                    <div><span class="carousel-macro-val">276</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">37g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">25g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">2g</span><span class="carousel-macro-label">fat</span></div>
                   </div>
                   <div class="carousel-ing-label">Ingredients</div>
                   <ul class="carousel-ing-list">
@@ -584,6 +585,33 @@
                 </div>
               </div>
 
+              <!-- Slide 4: Cookies & Cream -->
+              <div class="carousel-slide slide-brown" onclick="openRecipe('cookies-cream', 'pic')">
+                <div class="carousel-slide-inner">
+                  <div class="carousel-tag">Recipe 04 · Indulgent</div>
+                  <div class="carousel-title">Cookies & Cream</div>
+                  <div class="carousel-desc">Creamy vanilla protein base with crushed Oreo mix-in — high protein, worth every bite</div>
+                  <div class="carousel-macros">
+                    <div><span class="carousel-macro-val">344</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">36g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">34g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">7g</span><span class="carousel-macro-label">fat</span></div>
+                  </div>
+                  <div class="carousel-ing-label">Ingredients</div>
+                  <ul class="carousel-ing-list">
+                    <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">250ml</span></li>
+                    <li><span class="carousel-ing-name">ON French Vanilla Crème</span><span class="carousel-ing-amt">1 scoop</span></li>
+                    <li><span class="carousel-ing-name">Skim milk powder</span><span class="carousel-ing-amt">1 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Xanthan gum</span><span class="carousel-ing-amt">¼–½ tsp</span></li>
+                    <li><span class="carousel-ing-name">Stevia powder (1:1)</span><span class="carousel-ing-amt">1 tsp</span></li>
+                    <li><span class="carousel-ing-name">Vanilla extract</span><span class="carousel-ing-amt">½ tsp</span></li>
+                    <li><span class="carousel-ing-name">Oreo cookies (mix-in)</span><span class="carousel-ing-amt">2 cookies</span></li>
+                    <li><span class="carousel-ing-name">Salt</span><span class="carousel-ing-amt">Pinch</span></li>
+                  </ul>
+                  <div class="carousel-cta">Tap to view full recipe ↓</div>
+                </div>
+              </div>
+
             </div><!-- end track-pic -->
           </div><!-- end carousel-outer -->
           <div class="carousel-controls">
@@ -592,6 +620,7 @@
               <button class="dot active" onclick="go('pic', 0)"></button>
               <button class="dot" onclick="go('pic', 1)"></button>
               <button class="dot" onclick="go('pic', 2)"></button>
+              <button class="dot" onclick="go('pic', 3)"></button>
             </div>
             <button class="carousel-btn" onclick="move('pic', 1)">›</button>
           </div>
@@ -617,17 +646,17 @@
               <div class="recipe-toggle">⌄</div>
             </div>
             <div class="macro-bar">
-              <div class="macro-item"><span class="macro-val">300</span><span class="macro-label">kcal</span></div>
-              <div class="macro-item"><span class="macro-val">38g</span><span class="macro-label">protein</span></div>
-              <div class="macro-item"><span class="macro-val">22g</span><span class="macro-label">carbs</span></div>
-              <div class="macro-item"><span class="macro-val">4.5g</span><span class="macro-label">fat</span></div>
+              <div class="macro-item"><span class="macro-val">235</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">35g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">18g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">2g</span><span class="macro-label">fat</span></div>
             </div>
             <div class="recipe-body">
               <div class="sec-title">Ingredients</div>
               <ul class="ing-list">
-                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">400ml</span></li>
-                <li><span class="ing-name">ON Gold Standard French Vanilla Crème</span><span class="ing-amt">1 scoop</span></li>
-                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">250ml <span class="ing-cal">· 90 kcal</span></span></li>
+                <li><span class="ing-name">ON Gold Standard French Vanilla Crème</span><span class="ing-amt">1 scoop <span class="ing-cal">· 120 kcal</span></span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp <span class="ing-cal">· 25 kcal</span></span></li>
                 <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼ tsp</span></li>
                 <li><span class="ing-name">Vanilla extract</span><span class="ing-amt">½ tsp</span></li>
                 <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">1 tsp</span></li>
@@ -655,18 +684,18 @@
               <div class="recipe-toggle">⌄</div>
             </div>
             <div class="macro-bar">
-              <div class="macro-item"><span class="macro-val">295</span><span class="macro-label">kcal</span></div>
-              <div class="macro-item"><span class="macro-val">38g</span><span class="macro-label">protein</span></div>
-              <div class="macro-item"><span class="macro-val">21g</span><span class="macro-label">carbs</span></div>
-              <div class="macro-item"><span class="macro-val">4.5g</span><span class="macro-label">fat</span></div>
+              <div class="macro-item"><span class="macro-val">260</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">37g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">24g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">3g</span><span class="macro-label">fat</span></div>
             </div>
             <div class="recipe-body">
               <div class="sec-title">Ingredients</div>
               <ul class="ing-list">
-                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">300ml</span></li>
-                <li><span class="ing-name">ON Gold Standard French Vanilla Crème</span><span class="ing-amt">1 scoop</span></li>
-                <li><span class="ing-name">Unsweetened cocoa powder</span><span class="ing-amt">2 tbsp</span></li>
-                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">250ml <span class="ing-cal">· 90 kcal</span></span></li>
+                <li><span class="ing-name">ON Gold Standard French Vanilla Crème</span><span class="ing-amt">1 scoop <span class="ing-cal">· 120 kcal</span></span></li>
+                <li><span class="ing-name">Unsweetened cocoa powder</span><span class="ing-amt">2 tbsp <span class="ing-cal">· 24 kcal</span></span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp <span class="ing-cal">· 25 kcal</span></span></li>
                 <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼ tsp</span></li>
                 <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">1½ tsp</span></li>
                 <li><span class="ing-name">Salt</span><span class="ing-amt">Pinch</span></li>
@@ -694,19 +723,19 @@
               <div class="recipe-toggle">⌄</div>
             </div>
             <div class="macro-bar">
-              <div class="macro-item"><span class="macro-val">292</span><span class="macro-label">kcal</span></div>
-              <div class="macro-item"><span class="macro-val">36g</span><span class="macro-label">protein</span></div>
-              <div class="macro-item"><span class="macro-val">22g</span><span class="macro-label">carbs</span></div>
-              <div class="macro-item"><span class="macro-val">3g</span><span class="macro-label">fat</span></div>
+              <div class="macro-item"><span class="macro-val">276</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">37g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">25g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">2g</span><span class="macro-label">fat</span></div>
             </div>
             <div class="recipe-body">
               <div class="sec-title">Ingredients</div>
               <ul class="ing-list">
-                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">250ml</span></li>
-                <li><span class="ing-name">ON Gold Standard French Vanilla Crème</span><span class="ing-amt">1 scoop</span></li>
-                <li><span class="ing-name">Fresh strawberries, hulled</span><span class="ing-amt">80g</span></li>
-                <li><span class="ing-name">Fat free cream cheese</span><span class="ing-amt">1 tbsp</span></li>
-                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">250ml <span class="ing-cal">· 90 kcal</span></span></li>
+                <li><span class="ing-name">ON Gold Standard French Vanilla Crème</span><span class="ing-amt">1 scoop <span class="ing-cal">· 120 kcal</span></span></li>
+                <li><span class="ing-name">Fresh strawberries, hulled</span><span class="ing-amt">80g <span class="ing-cal">· 26 kcal</span></span></li>
+                <li><span class="ing-name">Fat free cream cheese</span><span class="ing-amt">1 tbsp <span class="ing-cal">· 15 kcal</span></span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp <span class="ing-cal">· 25 kcal</span></span></li>
                 <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼ tsp</span></li>
                 <li><span class="ing-name">Lemon juice</span><span class="ing-amt">½ tsp</span></li>
                 <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">1 tsp</span></li>
@@ -724,6 +753,46 @@
             </div>
           </div>
 
+          <!-- Recipe: Cookies & Cream -->
+          <div class="recipe-card" id="card-cookies-cream">
+            <div class="recipe-header rh-brown" onclick="toggleCard('cookies-cream')">
+              <div>
+                <div class="recipe-tag rt-accent">Recipe 04 · Indulgent</div>
+                <div class="recipe-title">Cookies & Cream</div>
+                <div class="recipe-desc">Vanilla protein base, crushed Oreo mix-in after spinning</div>
+              </div>
+              <div class="recipe-toggle">⌄</div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-item"><span class="macro-val">344</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">36g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">34g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">7g</span><span class="macro-label">fat</span></div>
+            </div>
+            <div class="recipe-body">
+              <div class="sec-title">Ingredients</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">250ml <span class="ing-cal">· 90 kcal</span></span></li>
+                <li><span class="ing-name">ON Gold Standard French Vanilla Crème</span><span class="ing-amt">1 scoop <span class="ing-cal">· 120 kcal</span></span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp <span class="ing-cal">· 25 kcal</span></span></li>
+                <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼–½ tsp</span></li>
+                <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">1 tsp</span></li>
+                <li><span class="ing-name">Vanilla extract</span><span class="ing-amt">½ tsp</span></li>
+                <li><span class="ing-name">Salt</span><span class="ing-amt">Pinch</span></li>
+                <li><span class="ing-name">Oreo cookies — crushed (mix-in after spinning)</span><span class="ing-amt">2 cookies <span class="ing-cal">· 109 kcal</span></span></li>
+              </ul>
+              <div class="sec-title">Method</div>
+              <ol class="steps">
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Blend the base</div>Add milk, protein powder, skim milk powder, xanthan gum, stevia, vanilla, and salt to blender. Blend 30–60 seconds until smooth. Do NOT add Oreos — they go in after spinning.</div></li>
+                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Pour & freeze</div>Pour into Ninja Creami pint up to max fill line. Level top flat. Freeze at back of freezer 24 hours.</div></li>
+                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Temper & spin — then re-spin</div>Rest 5 mins on counter, run Lite Ice Cream, then re-spin once for a creamier texture.</div></li>
+                <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Crush Oreos & mix in</div>Break 2 Oreo cookies into rough chunks — not dust, you want pieces. Make a well in the centre of the spun ice cream. Add Oreo pieces and run the Mix-In function.</div></li>
+                <li class="step"><div class="step-num">5</div><div class="step-text"><div class="step-title">Serve immediately</div>Eat straight from the pint — the Oreo pieces will soften slightly from the ice cream and get that classic cookies & cream texture.</div></li>
+              </ol>
+              <div class="tip-box"><strong>Why add Oreos after spinning?</strong> Blending them in before freezing turns them into mush. Adding post-spin keeps distinct cookie chunks throughout. Crush them by hand or wrap in a cloth and smash — you want irregular pieces, not crumbs.</div>
+            </div>
+          </div>
+
         </div><!-- end all-pic -->
       </div><!-- end cat-pic -->
 
@@ -737,7 +806,7 @@
         <div class="carousel-wrap">
           <div class="carousel-label">
             <span>⭐ Featured</span>
-            <span class="carousel-counter" id="cc-lcic">1 / 3</span>
+            <span class="carousel-counter" id="cc-lcic">1 / 4</span>
           </div>
           <div class="carousel-outer">
             <div class="carousel-track" id="track-lcic">
@@ -757,12 +826,13 @@
                   <div class="carousel-ing-label">Ingredients</div>
                   <ul class="carousel-ing-list">
                     <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">300ml</span></li>
-                    <li><span class="carousel-ing-name">Frozen strawberries</span><span class="carousel-ing-amt">80g</span></li>
+                    <li><span class="carousel-ing-name">Frozen strawberries (40g base, 40g mix-in)</span><span class="carousel-ing-amt">80g</span></li>
                     <li><span class="carousel-ing-name">Fat free cream cheese</span><span class="carousel-ing-amt">1 tbsp</span></li>
                     <li><span class="carousel-ing-name">Skim milk powder</span><span class="carousel-ing-amt">1 tbsp</span></li>
-                    <li><span class="carousel-ing-name">Xanthan gum</span><span class="carousel-ing-amt">¼ tsp</span></li>
-                    <li><span class="carousel-ing-name">Stevia powder (1:1)</span><span class="carousel-ing-amt">1 tsp</span></li>
+                    <li><span class="carousel-ing-name">Xanthan gum</span><span class="carousel-ing-amt">¼–½ tsp</span></li>
+                    <li><span class="carousel-ing-name">Stevia powder (1:1)</span><span class="carousel-ing-amt">1½ tsp</span></li>
                     <li><span class="carousel-ing-name">Vanilla extract</span><span class="carousel-ing-amt">½ tsp</span></li>
+                    <li><span class="carousel-ing-name">Lemon juice</span><span class="carousel-ing-amt">½ tsp</span></li>
                     <li><span class="carousel-ing-name">Salt</span><span class="carousel-ing-amt">Pinch</span></li>
                   </ul>
                   <div class="carousel-cta">Tap to view full recipe ↓</div>
@@ -776,20 +846,21 @@
                   <div class="carousel-title">Milo Ice Cream</div>
                   <div class="carousel-desc">That classic Milo taste in ice cream form — nostalgic and low cal</div>
                   <div class="carousel-macros">
-                    <div><span class="carousel-macro-val">215</span><span class="carousel-macro-label">kcal</span></div>
-                    <div><span class="carousel-macro-val">13g</span><span class="carousel-macro-label">protein</span></div>
-                    <div><span class="carousel-macro-val">31g</span><span class="carousel-macro-label">carbs</span></div>
-                    <div><span class="carousel-macro-val">2g</span><span class="carousel-macro-label">fat</span></div>
+                    <div><span class="carousel-macro-val">303</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">18g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">49g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">4g</span><span class="carousel-macro-label">fat</span></div>
                   </div>
                   <div class="carousel-ing-label">Ingredients</div>
                   <ul class="carousel-ing-list">
                     <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">300ml</span></li>
-                    <li><span class="carousel-ing-name">Milo powder</span><span class="carousel-ing-amt">3 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Milo powder</span><span class="carousel-ing-amt">4 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Unsweetened cocoa powder</span><span class="carousel-ing-amt">1 tsp</span></li>
                     <li><span class="carousel-ing-name">Fat free cream cheese</span><span class="carousel-ing-amt">1 tbsp</span></li>
                     <li><span class="carousel-ing-name">Skim milk powder</span><span class="carousel-ing-amt">1 tbsp</span></li>
-                    <li><span class="carousel-ing-name">Xanthan gum</span><span class="carousel-ing-amt">¼ tsp</span></li>
-                    <li><span class="carousel-ing-name">Stevia powder (1:1)</span><span class="carousel-ing-amt">1½ tsp</span></li>
-                    <li><span class="carousel-ing-name">Vanilla extract</span><span class="carousel-ing-amt">1 tsp</span></li>
+                    <li><span class="carousel-ing-name">Xanthan gum</span><span class="carousel-ing-amt">¼–½ tsp</span></li>
+                    <li><span class="carousel-ing-name">Stevia powder (1:1)</span><span class="carousel-ing-amt">2 tsp</span></li>
+                    <li><span class="carousel-ing-name">Vanilla extract</span><span class="carousel-ing-amt">½ tsp</span></li>
                     <li><span class="carousel-ing-name">Salt</span><span class="carousel-ing-amt">Pinch</span></li>
                   </ul>
                   <div class="carousel-cta">Tap to view full recipe ↓</div>
@@ -821,6 +892,33 @@
                 </div>
               </div>
 
+              <!-- Slide 4: Mango -->
+              <div class="carousel-slide slide-blue" onclick="openRecipe('mango', 'lcic')">
+                <div class="carousel-slide-inner">
+                  <div class="carousel-tag">Recipe 04 · Tropical</div>
+                  <div class="carousel-title">Mango Ice Cream</div>
+                  <div class="carousel-desc">Real mango blended into the base — naturally sweet, tropical, and low cal</div>
+                  <div class="carousel-macros">
+                    <div><span class="carousel-macro-val">185</span><span class="carousel-macro-label">kcal</span></div>
+                    <div><span class="carousel-macro-val">13g</span><span class="carousel-macro-label">protein</span></div>
+                    <div><span class="carousel-macro-val">33g</span><span class="carousel-macro-label">carbs</span></div>
+                    <div><span class="carousel-macro-val">1g</span><span class="carousel-macro-label">fat</span></div>
+                  </div>
+                  <div class="carousel-ing-label">Ingredients</div>
+                  <ul class="carousel-ing-list">
+                    <li><span class="carousel-ing-name">Fresh or frozen mango flesh</span><span class="carousel-ing-amt">120g</span></li>
+                    <li><span class="carousel-ing-name">Farm Fresh Skinny Milk</span><span class="carousel-ing-amt">200ml</span></li>
+                    <li><span class="carousel-ing-name">Fat free cream cheese</span><span class="carousel-ing-amt">1 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Skim milk powder</span><span class="carousel-ing-amt">1 tbsp</span></li>
+                    <li><span class="carousel-ing-name">Xanthan gum</span><span class="carousel-ing-amt">¼–½ tsp</span></li>
+                    <li><span class="carousel-ing-name">Stevia powder (1:1)</span><span class="carousel-ing-amt">½ tsp</span></li>
+                    <li><span class="carousel-ing-name">Lime juice</span><span class="carousel-ing-amt">½ tsp</span></li>
+                    <li><span class="carousel-ing-name">Salt</span><span class="carousel-ing-amt">Pinch</span></li>
+                  </ul>
+                  <div class="carousel-cta">Tap to view full recipe ↓</div>
+                </div>
+              </div>
+
             </div><!-- end track-lcic -->
           </div>
           <div class="carousel-controls">
@@ -829,6 +927,7 @@
               <button class="dot active" onclick="go('lcic', 0)"></button>
               <button class="dot" onclick="go('lcic', 1)"></button>
               <button class="dot" onclick="go('lcic', 2)"></button>
+              <button class="dot" onclick="go('lcic', 3)"></button>
             </div>
             <button class="carousel-btn" onclick="move('lcic', 1)">›</button>
           </div>
@@ -852,33 +951,34 @@
               <div class="recipe-toggle">⌄</div>
             </div>
             <div class="macro-bar">
-              <div class="macro-item"><span class="macro-val">194</span><span class="macro-label">kcal</span></div>
-              <div class="macro-item"><span class="macro-val">14g</span><span class="macro-label">protein</span></div>
-              <div class="macro-item"><span class="macro-val">26g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">174</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">15g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">25g</span><span class="macro-label">carbs</span></div>
               <div class="macro-item"><span class="macro-val">1g</span><span class="macro-label">fat</span></div>
             </div>
             <div class="recipe-body">
               <div class="sec-title">Ingredients</div>
               <ul class="ing-list">
-                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">300ml</span></li>
-                <li><span class="ing-name">Frozen strawberries (for mix-in after spinning)</span><span class="ing-amt">80g</span></li>
-                <li><span class="ing-name">Fat free cream cheese</span><span class="ing-amt">1 tbsp</span></li>
-                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp</span></li>
-                <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼ tsp</span></li>
-                <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">1 tsp</span></li>
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">300ml <span class="ing-cal">· 108 kcal</span></span></li>
+                <li><span class="ing-name">Frozen strawberries — 40g base <span class="ing-cal">· 13 kcal</span>, 40g mix-in <span class="ing-cal">· 13 kcal</span></span><span class="ing-amt">80g total</span></li>
+                <li><span class="ing-name">Fat free cream cheese</span><span class="ing-amt">1 tbsp <span class="ing-cal">· 15 kcal</span></span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp <span class="ing-cal">· 25 kcal</span></span></li>
+                <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼–½ tsp</span></li>
+                <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">1½ tsp</span></li>
                 <li><span class="ing-name">Vanilla extract</span><span class="ing-amt">½ tsp</span></li>
+                <li><span class="ing-name">Lemon juice</span><span class="ing-amt">½ tsp</span></li>
                 <li><span class="ing-name">Salt</span><span class="ing-amt">Pinch</span></li>
               </ul>
               <div class="sec-title">Method</div>
               <ol class="steps">
-                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Make the base — no strawberries yet</div>Blend milk, cream cheese, skim milk powder, xanthan gum, stevia, vanilla extract, and salt until smooth. Do NOT add strawberries at this stage.</div></li>
-                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Pour & freeze</div>Pour plain base into Ninja Creami pint up to max fill line. Level top flat. Freeze at back of freezer 24 hours.</div></li>
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Blend the base with half the strawberries</div>Blend milk, 40g frozen strawberries, cream cheese, skim milk powder, xanthan gum, stevia, vanilla extract, lemon juice, and salt until smooth. The strawberries blended in give the base actual strawberry flavour instead of a plain vanilla base.</div></li>
+                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Pour & freeze</div>Pour base into Ninja Creami pint up to max fill line. Level top flat. Freeze at back of freezer 24 hours.</div></li>
                 <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Temper</div>Remove from freezer and let sit 5 minutes on the counter.</div></li>
-                <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Spin the base first</div>Run Lite Ice Cream function on the plain base. Let the full cycle complete.</div></li>
-                <li class="step"><div class="step-num">5</div><div class="step-text"><div class="step-title">Add strawberries & use Mix-In</div>Lightly thaw the frozen strawberries — just enough to be pliable but still cold. Make a well in the centre of the spun ice cream. Add strawberries and run the Mix-In function. This gives chunky real strawberry pieces throughout.</div></li>
-                <li class="step"><div class="step-num">6</div><div class="step-text"><div class="step-title">Serve immediately</div>Serve straight from the pint. The strawberry chunks will be slightly icy and chewy — that contrast is what makes this recipe.</div></li>
+                <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Spin — then re-spin</div>Run Lite Ice Cream. Once done, run Lite Ice Cream a second time. The re-spin breaks up ice crystals and gives a much creamier result.</div></li>
+                <li class="step"><div class="step-num">5</div><div class="step-text"><div class="step-title">Add remaining strawberries & use Mix-In</div>Lightly thaw the remaining 40g frozen strawberries — just enough to be pliable but still cold. Make a well in the centre of the spun ice cream. Add strawberries and run the Mix-In function for chunky real strawberry pieces throughout.</div></li>
+                <li class="step"><div class="step-num">6</div><div class="step-text"><div class="step-title">Serve immediately</div>Serve straight from the pint. The creamy strawberry base with slightly icy chunks on top is the best of both textures.</div></li>
               </ol>
-              <div class="tip-box"><strong>Why add strawberries after?</strong> Adding post-spin gives you distinct chunky fruit pieces instead of a uniformly pink base. The contrast of creamy base and slightly icy chunks is the best part of this recipe.</div>
+              <div class="tip-box"><strong>Why split the strawberries?</strong> Blending 40g into the base means the ice cream actually tastes like strawberry — the original recipe had no fruit flavour in the base at all. The remaining 40g as mix-in gives you the chunky texture contrast. Lemon juice amplifies the strawberry flavour without adding calories.</div>
             </div>
           </div>
 
@@ -893,33 +993,34 @@
               <div class="recipe-toggle">⌄</div>
             </div>
             <div class="macro-bar">
-              <div class="macro-item"><span class="macro-val">215</span><span class="macro-label">kcal</span></div>
-              <div class="macro-item"><span class="macro-val">13g</span><span class="macro-label">protein</span></div>
-              <div class="macro-item"><span class="macro-val">31g</span><span class="macro-label">carbs</span></div>
-              <div class="macro-item"><span class="macro-val">2g</span><span class="macro-label">fat</span></div>
+              <div class="macro-item"><span class="macro-val">303</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">18g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">49g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">4g</span><span class="macro-label">fat</span></div>
             </div>
             <div class="recipe-body">
               <div class="sec-title">Ingredients</div>
               <ul class="ing-list">
-                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">300ml</span></li>
-                <li><span class="ing-name">Milo powder</span><span class="ing-amt">3 tbsp</span></li>
-                <li><span class="ing-name">Fat free cream cheese</span><span class="ing-amt">1 tbsp</span></li>
-                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp</span></li>
-                <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼ tsp</span></li>
-                <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">1½ tsp</span></li>
-                <li><span class="ing-name">Vanilla extract</span><span class="ing-amt">1 tsp</span></li>
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">300ml <span class="ing-cal">· 108 kcal</span></span></li>
+                <li><span class="ing-name">Milo powder</span><span class="ing-amt">4 tbsp <span class="ing-cal">· 151 kcal</span></span></li>
+                <li><span class="ing-name">Unsweetened cocoa powder</span><span class="ing-amt">1 tsp <span class="ing-cal">· 4 kcal</span></span></li>
+                <li><span class="ing-name">Fat free cream cheese</span><span class="ing-amt">1 tbsp <span class="ing-cal">· 15 kcal</span></span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp <span class="ing-cal">· 25 kcal</span></span></li>
+                <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼–½ tsp</span></li>
+                <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">2 tsp</span></li>
+                <li><span class="ing-name">Vanilla extract</span><span class="ing-amt">½ tsp</span></li>
                 <li><span class="ing-name">Salt</span><span class="ing-amt">Pinch</span></li>
               </ul>
               <div class="sec-title">Method</div>
               <ol class="steps">
-                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Dissolve Milo first</div>Warm 50ml of milk in microwave 20 seconds. Add Milo powder and stir until fully dissolved — Milo leaves gritty lumps if mixed in cold milk.</div></li>
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Dissolve Milo & cocoa first</div>Warm 50ml of milk in microwave 20 seconds. Add Milo powder and cocoa powder, stir until fully dissolved — both leave gritty lumps if mixed in cold milk.</div></li>
                 <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Blend everything</div>Add Milo mixture to blender with remaining milk, cream cheese, skim milk powder, xanthan gum, stevia, vanilla, and salt. Blend 30–60 seconds until smooth.</div></li>
-                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Taste & adjust</div>Milo already has sugar but freezing mutes it significantly. The 1½ tsp stevia and 3 tbsp Milo should give a strong enough flavour — taste and adjust if needed.</div></li>
+                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Taste & adjust</div>The 4 tbsp Milo + cocoa + 2 tsp stevia should be noticeably stronger than before. Taste and add a bit more stevia if needed — go slightly sweeter than you want since freezing mutes flavour.</div></li>
                 <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Pour & freeze</div>Pour into Ninja Creami pint, level top flat, freeze 24 hours at back of freezer.</div></li>
-                <li class="step"><div class="step-num">5</div><div class="step-text"><div class="step-title">Temper & spin</div>Rest 5 mins on counter, run Lite Ice Cream, re-spin once if crumbly.</div></li>
+                <li class="step"><div class="step-num">5</div><div class="step-text"><div class="step-title">Temper & spin — then re-spin</div>Rest 5 mins on counter, run Lite Ice Cream, then run Lite Ice Cream a second time. The re-spin significantly reduces iciness.</div></li>
                 <li class="step"><div class="step-num">6</div><div class="step-text"><div class="step-title">Optional — Milo Dinosaur topping</div>Sprinkle dry Milo powder on top after spinning for that classic Milo Dinosaur look.</div></li>
               </ol>
-              <div class="tip-box"><strong>Fix for blandness:</strong> Bumped Milo from 2 to 3 tbsp and stevia from ½ to 1½ tsp. Milo flavour fades significantly when frozen so you need more than you think.</div>
+              <div class="tip-box"><strong>Why these changes?</strong> Bumped Milo to 4 tbsp and added cocoa powder — cocoa deepens the chocolate-malt flavour without adding much sweetness, so you get a richer taste without needing even more Milo. Stevia bumped to 2 tsp and vanilla reduced to ½ tsp since vanilla was competing with the Milo. Always re-spin for a creamier texture.</div>
             </div>
           </div>
 
@@ -942,9 +1043,9 @@
             <div class="recipe-body">
               <div class="sec-title">Ingredients</div>
               <ul class="ing-list">
-                <li><span class="ing-name">Fresh durian flesh (seeds removed)</span><span class="ing-amt">100g</span></li>
-                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">200ml</span></li>
-                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp</span></li>
+                <li><span class="ing-name">Fresh durian flesh (seeds removed)</span><span class="ing-amt">100g <span class="ing-cal">· 147 kcal</span></span></li>
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">200ml <span class="ing-cal">· 72 kcal</span></span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp <span class="ing-cal">· 25 kcal</span></span></li>
                 <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼ tsp</span></li>
                 <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">¾ tsp</span></li>
                 <li><span class="ing-name">Salt</span><span class="ing-amt">Pinch</span></li>
@@ -958,6 +1059,46 @@
                 <li class="step"><div class="step-num">5</div><div class="step-text"><div class="step-title">Temper & spin</div>Rest 5 mins on counter. Run Lite Ice Cream. Re-spin once if needed.</div></li>
               </ol>
               <div class="tip-box"><strong>Why no cream cheese?</strong> Durian has natural fat (~5g per 100g) which acts as a built-in emulsifier and creaminess booster. This will be your smoothest spinning low cal recipe. Milk is reduced to 200ml to account for the volume and moisture from the durian flesh itself.</div>
+            </div>
+          </div>
+
+          <!-- Recipe: Mango -->
+          <div class="recipe-card" id="card-mango">
+            <div class="recipe-header rh-blue" onclick="toggleCard('mango')">
+              <div>
+                <div class="recipe-tag rt-blue">Recipe 04 · Tropical</div>
+                <div class="recipe-title">Mango Ice Cream</div>
+                <div class="recipe-desc">Real mango blended into the base — naturally sweet and low cal</div>
+              </div>
+              <div class="recipe-toggle">⌄</div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-item"><span class="macro-val">185</span><span class="macro-label">kcal</span></div>
+              <div class="macro-item"><span class="macro-val">13g</span><span class="macro-label">protein</span></div>
+              <div class="macro-item"><span class="macro-val">33g</span><span class="macro-label">carbs</span></div>
+              <div class="macro-item"><span class="macro-val">1g</span><span class="macro-label">fat</span></div>
+            </div>
+            <div class="recipe-body">
+              <div class="sec-title">Ingredients</div>
+              <ul class="ing-list">
+                <li><span class="ing-name">Fresh or frozen mango flesh (no skin, no seed)</span><span class="ing-amt">120g <span class="ing-cal">· 74 kcal</span></span></li>
+                <li><span class="ing-name">Farm Fresh Skinny Milk</span><span class="ing-amt">200ml <span class="ing-cal">· 72 kcal</span></span></li>
+                <li><span class="ing-name">Fat free cream cheese</span><span class="ing-amt">1 tbsp <span class="ing-cal">· 15 kcal</span></span></li>
+                <li><span class="ing-name">Skim milk powder</span><span class="ing-amt">1 tbsp <span class="ing-cal">· 25 kcal</span></span></li>
+                <li><span class="ing-name">Xanthan gum</span><span class="ing-amt">¼–½ tsp</span></li>
+                <li><span class="ing-name">Stevia powder (1:1 with sugar)</span><span class="ing-amt">½ tsp</span></li>
+                <li><span class="ing-name">Lime juice</span><span class="ing-amt">½ tsp</span></li>
+                <li><span class="ing-name">Salt</span><span class="ing-amt">Pinch</span></li>
+              </ul>
+              <div class="sec-title">Method</div>
+              <ol class="steps">
+                <li class="step"><div class="step-num">1</div><div class="step-text"><div class="step-title">Blend mango first</div>Blend mango flesh alone until completely smooth — no fibrous bits. Strain if needed.</div></li>
+                <li class="step"><div class="step-num">2</div><div class="step-text"><div class="step-title">Add everything & blend</div>Add milk, cream cheese, skim milk powder, xanthan gum, stevia, lime juice, and salt. Blend 30–60 seconds until silky smooth.</div></li>
+                <li class="step"><div class="step-num">3</div><div class="step-text"><div class="step-title">Taste & adjust</div>Ripe mango is already naturally sweet — ½ tsp stevia should be enough. If your mango isn't super ripe, bump stevia to 1 tsp. Go slightly sweeter than you want since freezing mutes flavour.</div></li>
+                <li class="step"><div class="step-num">4</div><div class="step-text"><div class="step-title">Pour & freeze</div>Pour into Ninja Creami pint, level top flat, freeze 24 hours at back of freezer.</div></li>
+                <li class="step"><div class="step-num">5</div><div class="step-text"><div class="step-title">Temper & spin — then re-spin</div>Rest 5 mins on counter. Run Lite Ice Cream, then re-spin once. Mango freezes quite firm so the re-spin is important.</div></li>
+              </ol>
+              <div class="tip-box"><strong>Mango variety matters:</strong> Harum Manis or any very ripe local mango gives the best natural sweetness and flavour. Frozen mango works fine but taste before freezing — it can vary a lot by batch. Milk is reduced to 200ml to keep the pint from overfilling once the mango volume is added.</div>
             </div>
           </div>
 
@@ -1356,8 +1497,8 @@
 
     // Carousel state: tracks current slide and total slides per carousel
     const carousels = {
-      pic:   { cur: 0, tot: 3 },  // Protein Ice Cream: 3 recipes
-      lcic:  { cur: 0, tot: 3 },  // Low Cal Ice Cream: 3 recipes
+      pic:   { cur: 0, tot: 4 },  // Protein Ice Cream: 4 recipes
+      lcic:  { cur: 0, tot: 4 },  // Low Cal Ice Cream: 4 recipes
       meals: { cur: 0, tot: 5 }   // Meals: 5 recipes
     };
 

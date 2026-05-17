@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../CODING ENVIRONMENT/Python"
+		},
+		{
+			"path": ".git"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": ".git"
+	}
+}
